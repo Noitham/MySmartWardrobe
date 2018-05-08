@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity
     public void gotoLogin(View view) {
         Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(mainIntent);
+        //Comentario de prueba
     }
 //8888
 }

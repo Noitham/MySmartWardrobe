@@ -8,4 +8,10 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <ImageView
+        android:id="@+id/IMAGE"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/splashlogo2" />
+
 </android.support.constraint.ConstraintLayout>

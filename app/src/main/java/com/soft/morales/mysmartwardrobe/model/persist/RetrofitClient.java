@@ -1,4 +1,6 @@
-package com.soft.morales.mysmartwardrobe;
+package com.soft.morales.mysmartwardrobe.model.persist;
+
+import com.soft.morales.mysmartwardrobe.model.Garment;
 
 import java.util.List;
 

@@ -56,6 +56,8 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
+            id, name, photo, category, season, price, color, size, brand
+
             <!-- Brand Label -->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"

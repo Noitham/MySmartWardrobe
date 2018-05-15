@@ -17,9 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soft.morales.mysmartwardrobe.CardActivity;
-import com.soft.morales.mysmartwardrobe.Garment;
+import com.soft.morales.mysmartwardrobe.model.Garment;
 import com.soft.morales.mysmartwardrobe.R;
-import com.soft.morales.mysmartwardrobe.RetrofitClient;
+import com.soft.morales.mysmartwardrobe.model.persist.RetrofitClient;
 
 import java.util.List;
 
@@ -31,6 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 @SuppressLint("ValidFragment")
 public class MyClosetTabFragment extends Fragment {
+
     private int mPosition;
 
     private ListView listView;

@@ -6,12 +6,29 @@
             android:icon="@drawable/ic_home_24dp"
             android:title="@string/home" />
         <item
-            android:id="@+id/drawer_favorites"
-            android:icon="@drawable/ic_star_24dp"
-            android:title="@string/favorites" />
+            android:id="@+id/drawer_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Gallery" />
+
         <item
-            android:id="@+id/drawer_settings"
-            android:icon="@drawable/ic_settings_24dp"
-            android:title="@string/settings" />
+            android:id="@+id/add_new_garment"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Add new garment" />
+
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings" />
+
     </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Invite your friends" />
+        </menu>
+    </item>
+
 </menu>

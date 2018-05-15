@@ -19,7 +19,7 @@ import android.widget.FrameLayout;
 
 import com.soft.morales.mysmartwardrobe.fragments.HomeFragment;
 import com.soft.morales.mysmartwardrobe.fragments.MyClosetFragment;
-import com.soft.morales.mysmartwardrobe.fragments.SettingsFragment;
+import com.soft.morales.mysmartwardrobe.fragments.NewGarmentFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -76,12 +76,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.drawer_home:
                 fragmentClass = HomeFragment.class;
                 break;
-            case R.id.drawer_favorites:
+            case R.id.drawer_gallery:
                 fragmentClass = MyClosetFragment.class;
                 specialToolbarBehaviour = true;
                 break;
-            case R.id.drawer_settings:
-                fragmentClass = SettingsFragment.class;
+            case R.id.add_new_garment:
+                fragmentClass = NewGarmentFragment.class;
                 break;
             default:
                 fragmentClass = HomeFragment.class;

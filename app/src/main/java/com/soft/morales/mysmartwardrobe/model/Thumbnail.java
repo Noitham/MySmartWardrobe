@@ -1,4 +1,4 @@
-package com.soft.morales.mysmartwardrobe;
+package com.soft.morales.mysmartwardrobe.model;
 
 
 public class Thumbnail {

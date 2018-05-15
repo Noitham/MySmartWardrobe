@@ -53,6 +53,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".CardActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".NewGarmentActivity"
             android:label="@string/title_activity_fab"
             android:launchMode="singleTop"

@@ -74,7 +74,7 @@ public class NewGarmentFragment extends AppCompatActivity {
 
     /**
      * Receiving activity result method will be called after closing the camera
-     * */
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if the result is capturing Image

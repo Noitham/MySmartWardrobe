@@ -89,7 +89,6 @@ public class NewGarmentActivity extends AppCompatActivity {
     }
 
 
-
     /*
      * Capturing Camera Image will lauch camera app requrest image capture
      */
@@ -106,7 +105,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
     /**
      * Receiving activity result method will be called after closing the camera
-     * */
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // if the result is capturing Image

@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.drawer_settings:
                 fragmentClass = SettingsFragment.class;
                 break;
-
             default:
                 fragmentClass = HomeFragment.class;
                 break;

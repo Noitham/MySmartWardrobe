@@ -12,4 +12,9 @@
     <color name="secondary_text">#727272</color>
     <color name="divider">#B6B6B6</color>
     <color name="gray">#E0E0E0</color>
+
+    <color name="red">#FF0000</color>
+    <color name="dark">#333333</color>
+    <color name="black">#000000</color>
+    <color name="light">#CCCCCC</color>
 </resources>

@@ -14,7 +14,7 @@ public interface APIService {
 
     // Request method and URL specified in the annotation
 
-    @GET("garments/?format=json")
+    @GET("garments/")
     Call<List<Garment>> getGarment();
 
 

@@ -58,7 +58,7 @@
         </activity>
         <activity
             android:name=".NewGarmentActivity"
-            android:label="@string/title_activity_fab"
+            android:label=""
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity">
             <meta-data

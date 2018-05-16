@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +16,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soft.morales.mysmartwardrobe.CardActivity;
-import com.soft.morales.mysmartwardrobe.model.Garment;
 import com.soft.morales.mysmartwardrobe.R;
-import com.soft.morales.mysmartwardrobe.model.persist.RetrofitClient;
+import com.soft.morales.mysmartwardrobe.model.Garment;
+import com.soft.morales.mysmartwardrobe.model.persist.APIService;
+import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 @SuppressLint("ValidFragment")
 public class MyClosetTabFragment extends Fragment {
+
+    private APIService mAPIService;
 
     private int mPosition;
 
@@ -87,7 +87,7 @@ public class MyClosetTabFragment extends Fragment {
     public void startCardActivity(Garment garment) {
         Intent intent = new Intent(getActivity(), CardActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("description", garment.name + " : " + garment.description);
+        bundle.putString("description", garment.category + " : " + garment.brand);
         bundle.putString("imagename", garment.name + ".jpg");
         intent.putExtras(bundle);
         startActivity(intent);
@@ -95,14 +95,10 @@ public class MyClosetTabFragment extends Fragment {
 
     public Garment[] getGarments() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(RetrofitClient.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        RetrofitClient api = retrofit.create(RetrofitClient.class);
+        mAPIService = ApiUtils.getAPIService();
 
-        Call<List<Garment>> call = api.getGarment();
+        Call<List<Garment>> call = mAPIService.getGarment();
 
         call.enqueue(new Callback<List<Garment>>() {
             @Override
@@ -113,11 +109,9 @@ public class MyClosetTabFragment extends Fragment {
                 myGarments = new Garment[garments.size()];
 
                 for (int i = 0; i < garments.size(); i++) {
-                    Log.d("id", garments.get(i).getId());
-                    Log.d("name", garments.get(i).getName());
-                    Log.d("description", garments.get(i).getDescription());
 
                     myGarments[i] = garments.get(i);
+
                 }
 
             }

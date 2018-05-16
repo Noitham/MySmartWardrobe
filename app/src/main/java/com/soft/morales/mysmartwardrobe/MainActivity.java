@@ -20,6 +20,7 @@ import android.widget.FrameLayout;
 import com.soft.morales.mysmartwardrobe.fragments.HomeFragment;
 import com.soft.morales.mysmartwardrobe.fragments.MyClosetFragment;
 import com.soft.morales.mysmartwardrobe.fragments.NewGarmentFragment;
+import com.soft.morales.mysmartwardrobe.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.add_new_garment:
                 fragmentClass = NewGarmentFragment.class;
+                break;
+            case R.id.nav_manage:
+                fragmentClass = SettingsFragment.class;
                 break;
             default:
                 fragmentClass = HomeFragment.class;

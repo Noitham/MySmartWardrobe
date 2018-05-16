@@ -11,29 +11,55 @@ public class Garment {
     @SerializedName("name")
     @Expose
     public String name;
-    @SerializedName("description")
+    @SerializedName("photo")
     @Expose
-    public String description;
-    @SerializedName("thumbnail")
+    public String photo;
+    @SerializedName("category")
     @Expose
-    public Thumbnail thumbnail;
+    public String category;
+    @SerializedName("season")
+    @Expose
+    public String season;
+    @SerializedName("price")
+    @Expose
+    public String price;
+    @SerializedName("color")
+    @Expose
+    public String color;
+    @SerializedName("size")
+    @Expose
+    public String size;
+    @SerializedName("brand")
+    @Expose
+    public String brand;
 
-    public Garment(String id, String name, String description, Thumbnail thumbnail) {
+    public Garment(String id, String name, String photo, String category, String season, String price, String color, String size, String brand) {
         this.id = id;
         this.name = name;
-        this.description = description;
-        this.thumbnail = thumbnail;
+        this.photo = photo;
+        this.category = category;
+        this.season = season;
+        this.price = price;
+        this.color = color;
+        this.size = size;
+        this.brand = brand;
     }
 
-    public Garment(String id, String name, String description) {
+    public Garment(String id, String name, String category, String season, String price, String color, String size, String brand) {
         this.id = id;
         this.name = name;
-        this.description = description;
+        this.category = category;
+        this.season = season;
+        this.price = price;
+        this.color = color;
+        this.size = size;
+        this.brand = brand;
     }
 
-    public Garment(String id, String name) {
+    public Garment(String id, String name, String category) {
         this.id = id;
         this.name = name;
+        this.category = category;
     }
 
     public String getId() {
@@ -52,20 +78,60 @@ public class Garment {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getPhoto() {
+        return photo;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
-    public Object getThumbnail() {
-        return thumbnail;
+    public String getCategory() {
+        return category;
     }
 
-    public void setThumbnail(Thumbnail thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getSeason() {
+        return season;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
 }

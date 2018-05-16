@@ -20,8 +20,6 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleMarginEnd="@dimen/title_end_margin"
-            app:expandedTitleMarginStart="@dimen/title_start_margin"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -40,6 +38,7 @@
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -56,7 +55,93 @@
             android:paddingLeft="14dp"
             android:paddingRight="14dp">
 
-            id, name, photo, category, season, price, color, size, brand
+            <!--id, name, photo, category, season, price, color, size, brand -->
+
+            <!-- Brand Label -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="ID" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Brand Label -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Nombre" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Brand Label -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_photo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Foto" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/spinner_category"/>
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/spinner_season"/>
+
+            <!-- Brand Label -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Precio" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- Brand Label -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Color" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp"
+                android:id="@+id/spinner_size"/>
 
             <!-- Brand Label -->
             <android.support.design.widget.TextInputLayout
@@ -71,31 +156,15 @@
                     android:hint="Marca" />
             </android.support.design.widget.TextInputLayout>
 
-            <!-- Brand Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+            <android.support.v7.widget.AppCompatButton
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/input_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="Talla" />
-            </android.support.design.widget.TextInputLayout>
-
-            <!-- Brand Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/input_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="Precio" />
-            </android.support.design.widget.TextInputLayout>
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="Confirmar"
+                android:gravity="right"
+                android:onClick=""
+                android:id="@+id/button_send"/>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

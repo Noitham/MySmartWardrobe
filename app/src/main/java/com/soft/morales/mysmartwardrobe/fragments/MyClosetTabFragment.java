@@ -36,8 +36,6 @@ public class MyClosetTabFragment extends Fragment {
 
     private ListView listView;
 
-    Garment[] Garments;
-
     Garment myGarments[];
 
     public MyClosetTabFragment(int position) {
@@ -57,7 +55,7 @@ public class MyClosetTabFragment extends Fragment {
 
         listView = (ListView) container.findViewById(R.id.listview);
 
-        new loadDataWebServiceTask().execute();
+        getGarments();
 
         return rootView;
     }
@@ -80,7 +78,7 @@ public class MyClosetTabFragment extends Fragment {
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            startCardActivity(Garments[position]);
+            startCardActivity(myGarments[position]);
         }
     };
 
@@ -93,8 +91,7 @@ public class MyClosetTabFragment extends Fragment {
         startActivity(intent);
     }
 
-    public Garment[] getGarments() {
-
+    public void getGarments() {
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -114,6 +111,8 @@ public class MyClosetTabFragment extends Fragment {
 
                 }
 
+                fillListView(myGarments);
+
             }
 
             @Override
@@ -121,22 +120,6 @@ public class MyClosetTabFragment extends Fragment {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
-        return myGarments;
-    }
-
-    private class loadDataWebServiceTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... params) {
-            Garments = getGarments();
-            return "";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            fillListView(Garments);
-        }
-
     }
 
 }

@@ -28,6 +28,8 @@ public class SplashScreenActivity extends Activity {
                 /* Create an Intent that will start the Menu-Activity. */
                 Intent mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
                 startActivity(mainIntent);
+                
+                finish();
             }
         }, SPLASH_DISPLAY_LENGTH);
     }

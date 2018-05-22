@@ -62,6 +62,17 @@ public class Garment {
         this.category = category;
     }
 
+    public Garment(Garment garment) {
+        this.id = garment.getId();
+        this.name = garment.getName();
+        this.category = garment.getCategory();
+        this.season = garment.getSeason();
+        this.price = garment.getPrice();
+        this.color = garment.getColor();
+        this.size = garment.getSize();
+        this.brand = garment.getBrand();
+    }
+
     public String getId() {
         return id;
     }

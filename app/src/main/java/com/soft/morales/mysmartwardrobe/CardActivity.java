@@ -12,7 +12,7 @@ public class CardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fitxa_layout);
+        setContentView(R.layout.garment_details_layout);
 
         txtView = (TextView) findViewById(R.id.tvinfo);
         //    imageView = (ImageView)findViewById(R.id.imageView);

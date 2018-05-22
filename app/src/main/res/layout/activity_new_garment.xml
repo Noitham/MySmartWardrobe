@@ -57,18 +57,6 @@
 
             <!--id, name, photo, category, season, price, color, size, brand -->
 
-            <!-- Brand Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/input_id"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="ID" />
-            </android.support.design.widget.TextInputLayout>
 
             <!-- Brand Label -->
             <android.support.design.widget.TextInputLayout
@@ -163,7 +151,6 @@
                 android:layout_marginBottom="8dp"
                 android:text="Confirmar"
                 android:gravity="right"
-                android:onClick=""
                 android:id="@+id/button_send"/>
 
         </LinearLayout>

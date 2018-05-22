@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.soft.morales.mysmartwardrobe.fragments.CalendarFragment;
 import com.soft.morales.mysmartwardrobe.fragments.HomeFragment;
 import com.soft.morales.mysmartwardrobe.fragments.MyClosetFragment;
 import com.soft.morales.mysmartwardrobe.fragments.SettingsFragment;
@@ -84,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, NewGarmentActivity.class);
                 startActivity(intent);
                 return;
+            case R.id.drawer_calendar:
+                fragmentClass = CalendarFragment.class;
+                break;
             case R.id.nav_manage:
                 fragmentClass = SettingsFragment.class;
                 break;

@@ -65,7 +65,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
 
     private Button buttonSend;
-    private EditText textId, textName, textFoto, textBrand, textPrice, textColor;
+    private EditText textName, textFoto, textBrand, textPrice, textColor;
     private Spinner spinnerCategory, spinnerSeason, spinnerSize;
 
     private APIService mAPIService;
@@ -86,7 +86,6 @@ public class NewGarmentActivity extends AppCompatActivity {
         imgPreview = (ImageView) findViewById(R.id.backdrop);
 
         buttonSend = (Button) findViewById(R.id.button_send);
-        textId = (EditText) findViewById(R.id.input_id);
         textName = (EditText) findViewById(R.id.input_name);
         textFoto = (EditText) findViewById(R.id.input_photo);
         textBrand = (EditText) findViewById(R.id.input_brand);
@@ -111,7 +110,6 @@ public class NewGarmentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String id = textId.getText().toString().trim();
                 String name = textName.getText().toString().trim();
                 String photo = textFoto.getText().toString().trim();
                 String category = spinnerCategory.getSelectedItem().toString();
@@ -121,10 +119,10 @@ public class NewGarmentActivity extends AppCompatActivity {
                 String size = spinnerSize.getSelectedItem().toString();
                 String brand = textBrand.getText().toString().trim();
 
-                    sendPost(id,name,photo,category,season,price,color,size,brand);
+                    sendPost(name,photo,category,season,price,color,size,brand);
 
                 Toast.makeText(getApplicationContext(),
-                        id.toString() + name.toString()
+                              name.toString()
                                 + photo.toString() + category.toString()
                                 + season.toString() + price.toString()
                                 + color.toString() + size.toString() + brand.toString(), Toast.LENGTH_SHORT)
@@ -134,10 +132,10 @@ public class NewGarmentActivity extends AppCompatActivity {
 
     }
 
-    public void sendPost(String id, String name, String photo, String category, String season, String price,
+    public void sendPost(String name, String photo, String category, String season, String price,
                          String color, String size, String brand) {
 
-        mAPIService.savePost(id,name,photo,category,season,price,color,size,brand).enqueue(new Callback<Garment>() {
+        mAPIService.savePost(name,photo,category,season,price,color,size,brand).enqueue(new Callback<Garment>() {
             @Override
             public void onResponse(Call<Garment> call, Response<Garment> response) {
 
@@ -487,6 +485,7 @@ public class NewGarmentActivity extends AppCompatActivity {
         intent.setData(uri);
         startActivityForResult(intent, 101);
     }
+
 }
 
 

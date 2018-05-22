@@ -2,7 +2,6 @@ package com.soft.morales.mysmartwardrobe.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,6 +20,7 @@ import com.soft.morales.mysmartwardrobe.model.Garment;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,7 +36,9 @@ public class MyClosetTabFragment extends Fragment {
 
     private ListView listView;
 
-    Garment myGarments[];
+    List<Garment> myGarments;
+    List<Garment>  myShirts;
+    List<Garment>  myJackets;
 
     public MyClosetTabFragment(int position) {
         mPosition = position;
@@ -55,16 +57,28 @@ public class MyClosetTabFragment extends Fragment {
 
         listView = (ListView) container.findViewById(R.id.listview);
 
-        getGarments();
+
+
+        switch (mPosition){
+            case 1:
+                getAllShirts();
+                break;
+            case 4:
+                getAllJackets();
+                break;
+            default:
+                break;
+        }
 
         return rootView;
     }
 
-    public void fillListView(Garment Garments[]) {
+    public void fillListView(List<Garment> Garments) {
+
         if (Garments != null) {
-            String sList[] = new String[Garments.length];
-            for (int i = 0; i < Garments.length; i++) {
-                sList[i] = Garments[i].name;
+            String sList[] = new String[Garments.size()];
+            for (int i = 0; i < Garments.size(); i++) {
+                sList[i] = Garments.get(i).name;
             }
             listView = (ListView) getView().findViewById(R.id.listview);
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), // context
@@ -78,7 +92,7 @@ public class MyClosetTabFragment extends Fragment {
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            startCardActivity(myGarments[position]);
+            startCardActivity(myGarments.get(position));
         }
     };
 
@@ -91,7 +105,7 @@ public class MyClosetTabFragment extends Fragment {
         startActivity(intent);
     }
 
-    public void getGarments() {
+    public void getAllShirts(){
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -103,16 +117,25 @@ public class MyClosetTabFragment extends Fragment {
 
                 List<Garment> garments = response.body();
 
-                myGarments = new Garment[garments.size()];
+                myGarments = new ArrayList<>();
 
                 for (int i = 0; i < garments.size(); i++) {
 
-                    myGarments[i] = garments.get(i);
+                    myGarments.add(new Garment(garments.get(i)));
 
                 }
 
-                fillListView(myGarments);
+                myShirts = new ArrayList<>();
+                for (int i = 0; i < myGarments.size(); i++) {
 
+                    if(myGarments.get(i).getCategory().equalsIgnoreCase("camiseta")){
+
+                        myShirts.add(new Garment(myGarments.get(i)));
+
+                    }
+                }
+
+                fillListView(myShirts);
             }
 
             @Override
@@ -120,6 +143,78 @@ public class MyClosetTabFragment extends Fragment {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    public void getAllJackets(){
+
+        mAPIService = ApiUtils.getAPIService();
+
+        Call<List<Garment>> call = mAPIService.getGarment();
+
+        call.enqueue(new Callback<List<Garment>>() {
+            @Override
+            public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
+
+                List<Garment> garments = response.body();
+
+                myGarments = new ArrayList<>();
+
+                for (int i = 0; i < garments.size(); i++) {
+
+                    myGarments.add(new Garment(garments.get(i)));
+
+                }
+
+                myJackets = new ArrayList<>();
+                for (int i = 0; i < myGarments.size(); i++) {
+
+                    if(myGarments.get(i).getCategory().equalsIgnoreCase("chaqueta")){
+
+                        myJackets.add(new Garment(myGarments.get(i)));
+
+                    }
+                }
+
+                fillListView(myJackets);
+            }
+
+            @Override
+            public void onFailure(Call<List<Garment>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+
+    public void getAllGarments() {
+
+        mAPIService = ApiUtils.getAPIService();
+
+        Call<List<Garment>> call = mAPIService.getGarment();
+
+        call.enqueue(new Callback<List<Garment>>() {
+            @Override
+            public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
+
+                List<Garment> garments = response.body();
+
+                myGarments = new ArrayList<>();
+
+                for (int i = 0; i < garments.size(); i++) {
+
+                    myGarments.add(new Garment(garments.get(i)));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Garment>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
 }

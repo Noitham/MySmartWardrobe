@@ -20,15 +20,15 @@ public interface APIService {
 
     @POST("garments/")
     @FormUrlEncoded
-    Call<Garment> savePost(@Field("id") String id,
-                                  @Field("name") String name,
-                                  @Field("photo") String photo,
-                                  @Field("category") String category,
-                                  @Field("season") String season,
-                                  @Field("price") String price,
-                                  @Field("color") String color,
-                                  @Field("size") String size,
-                                  @Field("brand") String brand);
+    Call<Garment> savePost(
+            @Field("name") String name,
+            @Field("photo") String photo,
+            @Field("category") String category,
+            @Field("season") String season,
+            @Field("price") String price,
+            @Field("color") String color,
+            @Field("size") String size,
+            @Field("brand") String brand);
 
 
 }

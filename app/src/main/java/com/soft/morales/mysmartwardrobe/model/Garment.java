@@ -33,44 +33,16 @@ public class Garment {
     @Expose
     public String brand;
 
-    public Garment(String id, String name, String photo, String category, String season, String price, String color, String size, String brand) {
-        this.id = id;
-        this.name = name;
-        this.photo = photo;
-        this.category = category;
-        this.season = season;
-        this.price = price;
-        this.color = color;
-        this.size = size;
-        this.brand = brand;
-    }
-
-    public Garment(String id, String name, String category, String season, String price, String color, String size, String brand) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-        this.season = season;
-        this.price = price;
-        this.color = color;
-        this.size = size;
-        this.brand = brand;
-    }
-
-    public Garment(String id, String name, String category) {
-        this.id = id;
-        this.name = name;
-        this.category = category;
-    }
-
     public Garment(Garment garment) {
-        this.id = garment.getId();
-        this.name = garment.getName();
-        this.category = garment.getCategory();
-        this.season = garment.getSeason();
-        this.price = garment.getPrice();
-        this.color = garment.getColor();
-        this.size = garment.getSize();
-        this.brand = garment.getBrand();
+        this.id = garment.id;
+        this.name = garment.name;
+        this.photo = garment.photo;
+        this.category = garment.category;
+        this.season = garment.season;
+        this.price = garment.price;
+        this.color = garment.color;
+        this.size = garment.size;
+        this.brand = garment.brand;
     }
 
     public String getId() {

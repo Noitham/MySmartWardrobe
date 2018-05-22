@@ -36,9 +36,7 @@ public class MyClosetTabFragment extends Fragment {
 
     private ListView listView;
 
-    List<Garment> myGarments;
-    List<Garment>  myShirts;
-    List<Garment>  myJackets;
+    List<Garment> myGarments, myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
 
     public MyClosetTabFragment(int position) {
         mPosition = position;
@@ -57,14 +55,24 @@ public class MyClosetTabFragment extends Fragment {
 
         listView = (ListView) container.findViewById(R.id.listview);
 
-
-
         switch (mPosition){
             case 1:
                 getAllShirts();
                 break;
+            case 2:
+                getAllJeans();
+                break;
+            case 3:
+                getAllJerseys();
+                break;
             case 4:
                 getAllJackets();
+                break;
+            case 5:
+                getAllShoes();
+                break;
+            case 6:
+                getAllAccessories();
                 break;
             default:
                 break;
@@ -92,15 +100,44 @@ public class MyClosetTabFragment extends Fragment {
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-            startCardActivity(myGarments.get(position));
+
+            switch (mPosition){
+                case 1:
+                    startCardActivity(myShirts.get(position));
+                    break;
+                case 2:
+                    startCardActivity(myJeans.get(position));
+                    break;
+                case 3:
+                    startCardActivity(myJerseys.get(position));
+                    break;
+                case 4:
+                    startCardActivity(myJackets.get(position));
+                    break;
+                case 5:
+                    startCardActivity(myShoes.get(position));
+                    break;
+                case 6:
+                    startCardActivity(myAccessories.get(position));
+                    break;
+                default:
+                    break;
+            }
+
         }
     };
 
     public void startCardActivity(Garment garment) {
         Intent intent = new Intent(getActivity(), CardActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("description", garment.category + " : " + garment.brand);
-        bundle.putString("imagename", garment.name + ".jpg");
+        bundle.putString("Nombre", garment.name);
+        bundle.putString("Foto", garment.photo);
+        bundle.putString("Categoria", garment.category);
+        bundle.putString("Temporada", garment.season);
+        bundle.putString("Precio", garment.price);
+        bundle.putString("Color", garment.color);
+        bundle.putString("Talla", garment.size);
+        bundle.putString("Marca", garment.brand);
         intent.putExtras(bundle);
         startActivity(intent);
     }
@@ -126,13 +163,14 @@ public class MyClosetTabFragment extends Fragment {
                 }
 
                 myShirts = new ArrayList<>();
-                for (int i = 0; i < myGarments.size(); i++) {
+                for (int i = 0; i < garments.size(); i++) {
 
                     if(myGarments.get(i).getCategory().equalsIgnoreCase("camiseta")){
 
                         myShirts.add(new Garment(myGarments.get(i)));
 
                     }
+
                 }
 
                 fillListView(myShirts);
@@ -167,7 +205,7 @@ public class MyClosetTabFragment extends Fragment {
                 }
 
                 myJackets = new ArrayList<>();
-                for (int i = 0; i < myGarments.size(); i++) {
+                for (int i = 0; i < garments.size(); i++) {
 
                     if(myGarments.get(i).getCategory().equalsIgnoreCase("chaqueta")){
 
@@ -187,8 +225,7 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
-
-    public void getAllGarments() {
+    public void getAllJeans(){
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -207,6 +244,18 @@ public class MyClosetTabFragment extends Fragment {
                     myGarments.add(new Garment(garments.get(i)));
 
                 }
+
+                myJeans = new ArrayList<>();
+                for (int i = 0; i < garments.size(); i++) {
+
+                    if(myGarments.get(i).getCategory().equalsIgnoreCase("pantalón")){
+
+                        myJeans.add(new Garment(myGarments.get(i)));
+
+                    }
+                }
+
+                fillListView(myJeans);
             }
 
             @Override
@@ -216,5 +265,131 @@ public class MyClosetTabFragment extends Fragment {
         });
 
     }
+
+
+
+    public void getAllJerseys() {
+
+        mAPIService = ApiUtils.getAPIService();
+
+        Call<List<Garment>> call = mAPIService.getGarment();
+
+        call.enqueue(new Callback<List<Garment>>() {
+            @Override
+            public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
+
+                List<Garment> garments = response.body();
+
+                myGarments = new ArrayList<>();
+
+                for (int i = 0; i < garments.size(); i++) {
+
+                    myGarments.add(new Garment(garments.get(i)));
+
+                }
+
+                myJerseys = new ArrayList<>();
+                for (int i = 0; i < garments.size(); i++) {
+
+                    if(myGarments.get(i).getCategory().equalsIgnoreCase("jersey")){
+
+                        myJerseys.add(new Garment(myGarments.get(i)));
+
+                    }
+                }
+
+                fillListView(myJerseys);
+            }
+
+            @Override
+            public void onFailure(Call<List<Garment>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void getAllAccessories(){
+
+        mAPIService = ApiUtils.getAPIService();
+
+        Call<List<Garment>> call = mAPIService.getGarment();
+
+        call.enqueue(new Callback<List<Garment>>() {
+            @Override
+            public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
+
+                List<Garment> garments = response.body();
+
+                myGarments = new ArrayList<>();
+
+                for (int i = 0; i < garments.size(); i++) {
+
+                    myGarments.add(new Garment(garments.get(i)));
+
+                }
+
+                myAccessories = new ArrayList<>();
+                for (int i = 0; i < garments.size(); i++) {
+
+                    if(myGarments.get(i).getCategory().equalsIgnoreCase("accesorio")){
+
+                        myAccessories.add(new Garment(myGarments.get(i)));
+
+                    }
+                }
+
+                fillListView(myAccessories);
+            }
+
+            @Override
+            public void onFailure(Call<List<Garment>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
+    public void getAllShoes() {
+
+        mAPIService = ApiUtils.getAPIService();
+
+        Call<List<Garment>> call = mAPIService.getGarment();
+
+        call.enqueue(new Callback<List<Garment>>() {
+            @Override
+            public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
+
+                List<Garment> garments = response.body();
+
+                myGarments = new ArrayList<>();
+
+                for (int i = 0; i < garments.size(); i++) {
+
+                    myGarments.add(new Garment(garments.get(i)));
+
+                }
+
+                myShoes = new ArrayList<>();
+                for (int i = 0; i < garments.size(); i++) {
+
+                    if(myGarments.get(i).getCategory().equalsIgnoreCase("calzado")){
+
+                        myShoes.add(new Garment(myGarments.get(i)));
+
+                    }
+                }
+
+                fillListView(myShoes);
+            }
+
+            @Override
+            public void onFailure(Call<List<Garment>> call, Throwable t) {
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+
 
 }

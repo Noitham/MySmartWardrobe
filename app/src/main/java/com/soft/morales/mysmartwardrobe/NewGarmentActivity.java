@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -65,7 +66,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
 
     private Button buttonSend;
-    private EditText textName, textFoto, textBrand, textPrice, textColor;
+    private EditText textName, textBrand, textPrice, textColor;
     private Spinner spinnerCategory, spinnerSeason, spinnerSize;
 
     private APIService mAPIService;
@@ -87,7 +88,6 @@ public class NewGarmentActivity extends AppCompatActivity {
 
         buttonSend = (Button) findViewById(R.id.button_send);
         textName = (EditText) findViewById(R.id.input_name);
-        textFoto = (EditText) findViewById(R.id.input_photo);
         textBrand = (EditText) findViewById(R.id.input_brand);
         textPrice = (EditText) findViewById(R.id.input_price);
         textColor = (EditText) findViewById(R.id.input_color);
@@ -111,7 +111,7 @@ public class NewGarmentActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String name = textName.getText().toString().trim();
-                String photo = textFoto.getText().toString().trim();
+                String photo = fileUri.toString();
                 String category = spinnerCategory.getSelectedItem().toString();
                 String season = spinnerSeason.getSelectedItem().toString();
                 String price = textPrice.getText().toString().trim();
@@ -119,7 +119,19 @@ public class NewGarmentActivity extends AppCompatActivity {
                 String size = spinnerSize.getSelectedItem().toString();
                 String brand = textBrand.getText().toString().trim();
 
-                    sendPost(name,photo,category,season,price,color,size,brand);
+                new CountDownTimer(5000, 1000) {
+
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        createBrand(brand);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        sendPost(name,photo,category,season,price,color,size,brand);
+                    }
+
+                }.start();
 
                 Toast.makeText(getApplicationContext(),
                               name.toString()
@@ -127,6 +139,25 @@ public class NewGarmentActivity extends AppCompatActivity {
                                 + season.toString() + price.toString()
                                 + color.toString() + size.toString() + brand.toString(), Toast.LENGTH_SHORT)
                         .show();
+            }
+        });
+
+    }
+
+    public void createBrand(String name) {
+
+        mAPIService.createBrand(name).enqueue(new Callback<Garment>() {
+            @Override
+            public void onResponse(Call<Garment> call, Response<Garment> response) {
+
+                if(response.isSuccessful()) {
+                    Log.d("OK: ", "post submitted to API." + response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Garment> call, Throwable t) {
+                Log.d("NOOK: ", "Unable to submit post to API.");
             }
         });
 
@@ -198,10 +229,11 @@ public class NewGarmentActivity extends AppCompatActivity {
 
         adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterCategory.add("Camiseta");
-        adapterCategory.add("Camisa");
         adapterCategory.add("Pantalón");
-        adapterCategory.add("Sudadera");
+        adapterCategory.add("Jersey");
         adapterCategory.add("Chaqueta");
+        adapterCategory.add("Calzado");
+        adapterCategory.add("Accesorio");
         adapterCategory.add("Categoria");
 
         spinnerCategory.setAdapter(adapterCategory);

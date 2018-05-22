@@ -75,14 +75,28 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/input_photo"
+                <EditText android:id="@+id/input_brand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:hint="Foto" />
+                    android:hint="Marca" />
             </android.support.design.widget.TextInputLayout>
+
+            <!-- Brand Label -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="8dp">
+                <EditText android:id="@+id/input_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:hint="Precio" />
+            </android.support.design.widget.TextInputLayout>
+
 
             <android.support.v7.widget.AppCompatSpinner
                 android:layout_width="match_parent"
@@ -104,19 +118,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/input_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="Precio" />
-            </android.support.design.widget.TextInputLayout>
-
-            <!-- Brand Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="8dp">
                 <EditText android:id="@+id/input_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,18 +132,6 @@
                 android:layout_marginBottom="8dp"
                 android:id="@+id/spinner_size"/>
 
-            <!-- Brand Label -->
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp">
-                <EditText android:id="@+id/input_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:hint="Marca" />
-            </android.support.design.widget.TextInputLayout>
 
             <android.support.v7.widget.AppCompatButton
                 android:layout_width="wrap_content"

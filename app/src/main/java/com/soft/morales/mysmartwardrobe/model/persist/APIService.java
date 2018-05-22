@@ -30,5 +30,10 @@ public interface APIService {
             @Field("size") String size,
             @Field("brand") String brand);
 
+    @POST("brands/")
+    @FormUrlEncoded
+    Call<Garment> createBrand(
+            @Field("name") String name);
+
 
 }

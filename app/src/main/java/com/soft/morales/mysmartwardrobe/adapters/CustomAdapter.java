@@ -71,7 +71,7 @@ public class CustomAdapter extends BaseAdapter {
 
 
             holder.garment_pic.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            holder.garment_pic.getLayoutParams().width = 400;
+            holder.garment_pic.getLayoutParams().width = 200;
             holder.garment_pic.setImageURI(Uri.parse(row_pos.getPhoto()));
             holder.garment_name.setText(row_pos.getName());
             holder.brand.setText(row_pos.getBrand());

@@ -83,30 +83,22 @@ public class MyClosetTabFragment extends Fragment {
 
     public void fillListView(List<Garment> Garments) {
 
-        if (Garments != null) {
+        List<Garment> rowItems = new ArrayList<Garment>();
 
-            String sList[] = new String[Garments.size()];
+        if (Garments != null) {
 
             for (int i = 0; i < Garments.size(); i++) {
 
-                Garment item = new Garment(Garments.get(i).name,
-                        Garments.get(i).photo, Garments.get(i).brand,
-                        Garments.get(i).category);
-                Garments.add(item);
+                Garment item = new Garment(Garments.get(i).getName(),
+                        Garments.get(i).getPhoto(), Garments.get(i).getCategory(),
+                        Garments.get(i).getBrand());
+                rowItems.add(item);
 
             }
 
             listView = (ListView) getView().findViewById(R.id.listview);
 
-            /**
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), // context
-                    R.layout.listitem, // layout description for each list item
-                    sList);
-
-            listView.setAdapter(arrayAdapter);
-            listView.setOnItemClickListener(listener);
-             **/
-            CustomAdapter adapter = new CustomAdapter(getContext(), myGarments);
+            CustomAdapter adapter = new CustomAdapter(getContext(), rowItems);
             listView.setAdapter(adapter);
             listView.setOnItemClickListener(listener);
 

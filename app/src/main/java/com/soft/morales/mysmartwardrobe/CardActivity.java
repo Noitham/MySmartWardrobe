@@ -69,6 +69,7 @@ public class CardActivity extends AppCompatActivity {
 
         deleteButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
+
                 AlertDialog diaBox = AskOption();
                 diaBox.show();
                 Toast.makeText(getApplicationContext(),"asdasd", Toast.LENGTH_LONG).show();

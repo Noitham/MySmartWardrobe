@@ -2,6 +2,8 @@ package com.soft.morales.mysmartwardrobe.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,10 +71,19 @@ public class CustomAdapter extends BaseAdapter {
 
             Garment row_pos = rowItems.get(position);
 
+            // bimatp factory
+            BitmapFactory.Options options = new BitmapFactory.Options();
+
+            // downsizing image as it throws OutOfMemory Exception for larger
+            // images
+            options.inSampleSize = 20;
+
+            final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(row_pos.getPhoto()).getPath(),
+                    options);
 
             holder.garment_pic.setScaleType(ImageView.ScaleType.FIT_CENTER);
             holder.garment_pic.getLayoutParams().width = 200;
-            holder.garment_pic.setImageURI(Uri.parse(row_pos.getPhoto()));
+            holder.garment_pic.setImageBitmap(bitmap);
             holder.garment_name.setText(row_pos.getName());
             holder.brand.setText(row_pos.getBrand());
             holder.category.setText(row_pos.getCategory());

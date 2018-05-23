@@ -54,6 +54,7 @@ public class MyClosetTabFragment extends Fragment {
         switch (mPosition) {
             case 1:
                 getAllShirts();
+
                 break;
             case 2:
                 getAllJeans();
@@ -178,7 +179,6 @@ public class MyClosetTabFragment extends Fragment {
                     }
 
                 }
-
                 fillListView(myShirts);
             }
 

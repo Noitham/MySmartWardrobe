@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,6 +176,7 @@ public class MyClosetTabFragment extends Fragment {
                     if (myGarments.get(i).getCategory().equalsIgnoreCase("camiseta")) {
 
                         myShirts.add(new Garment(myGarments.get(i)));
+                        Log.d("ID: ", String.valueOf(myGarments.get(i).getId()));
 
                     }
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.soft.morales.mysmartwardrobe.R;
 
-public class SettingsFragment extends Fragment{
+public class SettingsFragment extends Fragment {
 
     @Nullable
     @Override

@@ -135,6 +135,7 @@ public class MyClosetTabFragment extends Fragment {
     public void startCardActivity(Garment garment) {
         Intent intent = new Intent(getActivity(), CardActivity.class);
         Bundle bundle = new Bundle();
+        bundle.putString("ID", garment.id);
         bundle.putString("Nombre", garment.name);
         bundle.putString("Foto", garment.photo);
         bundle.putString("Categoria", garment.category);
@@ -207,6 +208,7 @@ public class MyClosetTabFragment extends Fragment {
 
                     myGarments.add(new Garment(garments.get(i)));
 
+
                 }
 
                 myJackets = new ArrayList<>();
@@ -217,6 +219,8 @@ public class MyClosetTabFragment extends Fragment {
                         myJackets.add(new Garment(myGarments.get(i)));
 
                     }
+
+
                 }
 
                 fillListView(myJackets);

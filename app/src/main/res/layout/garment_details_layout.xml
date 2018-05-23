@@ -63,5 +63,23 @@
         android:text=" ...."
         android:textColor="@color/dark" />
 
+    <RelativeLayout
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="50dp">
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Borrar prenda"
+            android:layout_alignParentBottom="true"
+            />
+
+    </RelativeLayout>
+
+
+
 
 </LinearLayout>

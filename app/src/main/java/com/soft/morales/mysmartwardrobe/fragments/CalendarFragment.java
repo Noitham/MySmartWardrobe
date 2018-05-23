@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.soft.morales.mysmartwardrobe.R;
 
-public class CalendarFragment extends Fragment{
+public class CalendarFragment extends Fragment {
 
     @Nullable
     @Override

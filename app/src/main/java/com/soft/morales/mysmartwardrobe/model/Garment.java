@@ -45,6 +45,13 @@ public class Garment {
         this.brand = garment.brand;
     }
 
+    public Garment(String name, String photo, String category, String brand) {
+        this.name = name;
+        this.photo = photo;
+        this.category = category;
+        this.brand = brand;
+    }
+
     public String getId() {
         return id;
     }

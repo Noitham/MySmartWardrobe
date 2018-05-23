@@ -26,6 +26,8 @@ public class MyClosetFragment extends Fragment {
             R.drawable.icon_accesories
     };
 
+    int myInt;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class MyClosetFragment extends Fragment {
         tabsAdapter.addFragment(new MyClosetTabFragment(3));
         tabsAdapter.addFragment(new MyClosetTabFragment(4));
         tabsAdapter.addFragment(new MyClosetTabFragment(5));
-        tabsAdapter.addFragment(new MyClosetTabFragment(5));
+        tabsAdapter.addFragment(new MyClosetTabFragment(6));
 
         viewPager.setAdapter(tabsAdapter);
 

@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -31,19 +32,50 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     NavigationView navigationView;
     FrameLayout frameLayout;
+    int value = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        if (getIntent().getExtras() != null) {
+
+            value = getIntent().getExtras().getInt("ok");
+        }
+
         fragmentManager = getSupportFragmentManager();
 
         setupView();
+
         if (savedInstanceState == null) showHome();
+
+        if (value == 1) {
+            boolean specialToolbarBehaviour;
+            Class fragmentClass;
+            fragmentClass = MyClosetFragment.class;
+            specialToolbarBehaviour = true;
+            Fragment fragment = null;
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+            setToolbarElevation(specialToolbarBehaviour);
+            setTitle("Gallery");
+            drawerLayout.closeDrawer(Gravity.START, false);
+
+        }
+
     }
 
     private void setupView() {
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -61,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
     }
 
     private void showHome() {
@@ -91,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.nav_manage:
                 fragmentClass = SettingsFragment.class;
                 break;
+            case R.id.add_new_look:
+                Intent intent2 = new Intent(this, NewLookActivity.class);
+                startActivity(intent2);
+                return;
             default:
                 fragmentClass = HomeFragment.class;
                 break;

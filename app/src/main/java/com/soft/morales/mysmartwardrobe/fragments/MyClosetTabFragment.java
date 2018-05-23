@@ -9,13 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soft.morales.mysmartwardrobe.CardActivity;
 import com.soft.morales.mysmartwardrobe.R;
+import com.soft.morales.mysmartwardrobe.adapters.CustomAdapter;
 import com.soft.morales.mysmartwardrobe.model.Garment;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
@@ -84,16 +84,32 @@ public class MyClosetTabFragment extends Fragment {
     public void fillListView(List<Garment> Garments) {
 
         if (Garments != null) {
+
             String sList[] = new String[Garments.size()];
+
             for (int i = 0; i < Garments.size(); i++) {
-                sList[i] = Garments.get(i).name;
+
+                Garment item = new Garment(Garments.get(i).name,
+                        Garments.get(i).photo, Garments.get(i).brand,
+                        Garments.get(i).category);
+                Garments.add(item);
+
             }
+
             listView = (ListView) getView().findViewById(R.id.listview);
+
+            /**
             ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), // context
                     R.layout.listitem, // layout description for each list item
                     sList);
+
             listView.setAdapter(arrayAdapter);
             listView.setOnItemClickListener(listener);
+             **/
+            CustomAdapter adapter = new CustomAdapter(getContext(), myGarments);
+            listView.setAdapter(adapter);
+            listView.setOnItemClickListener(listener);
+
         }
     }
 
@@ -101,28 +117,29 @@ public class MyClosetTabFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-            switch (mPosition){
-                case 1:
-                    startCardActivity(myShirts.get(position));
-                    break;
-                case 2:
-                    startCardActivity(myJeans.get(position));
-                    break;
-                case 3:
-                    startCardActivity(myJerseys.get(position));
-                    break;
-                case 4:
-                    startCardActivity(myJackets.get(position));
-                    break;
-                case 5:
-                    startCardActivity(myShoes.get(position));
-                    break;
-                case 6:
-                    startCardActivity(myAccessories.get(position));
-                    break;
-                default:
-                    break;
-            }
+
+                switch (mPosition) {
+                    case 1:
+                        startCardActivity(myShirts.get(position));
+                        break;
+                    case 2:
+                        startCardActivity(myJeans.get(position));
+                        break;
+                    case 3:
+                        startCardActivity(myJerseys.get(position));
+                        break;
+                    case 4:
+                        startCardActivity(myJackets.get(position));
+                        break;
+                    case 5:
+                        startCardActivity(myShoes.get(position));
+                        break;
+                    case 6:
+                        startCardActivity(myAccessories.get(position));
+                        break;
+                    default:
+                        break;
+                }
 
         }
     };
@@ -332,7 +349,7 @@ public class MyClosetTabFragment extends Fragment {
                 myAccessories = new ArrayList<>();
                 for (int i = 0; i < garments.size(); i++) {
 
-                    if(myGarments.get(i).getCategory().equalsIgnoreCase("accesorio")){
+                    if(myGarments.get(i).getCategory().equalsIgnoreCase("Accesorio")){
 
                         myAccessories.add(new Garment(myGarments.get(i)));
 

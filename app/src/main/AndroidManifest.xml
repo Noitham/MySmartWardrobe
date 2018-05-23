@@ -57,6 +57,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".NewLookActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".NewGarmentActivity"
             android:label=""
             android:launchMode="singleTop"

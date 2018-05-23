@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soft.morales.mysmartwardrobe.CardActivity;
@@ -50,12 +49,9 @@ public class MyClosetTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab, container, false);
 
-        TextView textView = (TextView) rootView.findViewById(R.id.fav_number);
-        textView.setText("Type " + mPosition);
-
         listView = (ListView) container.findViewById(R.id.listview);
 
-        switch (mPosition){
+        switch (mPosition) {
             case 1:
                 getAllShirts();
                 break;
@@ -110,28 +106,28 @@ public class MyClosetTabFragment extends Fragment {
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
 
-                switch (mPosition) {
-                    case 1:
-                        startCardActivity(myShirts.get(position));
-                        break;
-                    case 2:
-                        startCardActivity(myJeans.get(position));
-                        break;
-                    case 3:
-                        startCardActivity(myJerseys.get(position));
-                        break;
-                    case 4:
-                        startCardActivity(myJackets.get(position));
-                        break;
-                    case 5:
-                        startCardActivity(myShoes.get(position));
-                        break;
-                    case 6:
-                        startCardActivity(myAccessories.get(position));
-                        break;
-                    default:
-                        break;
-                }
+            switch (mPosition) {
+                case 1:
+                    startCardActivity(myShirts.get(position));
+                    break;
+                case 2:
+                    startCardActivity(myJeans.get(position));
+                    break;
+                case 3:
+                    startCardActivity(myJerseys.get(position));
+                    break;
+                case 4:
+                    startCardActivity(myJackets.get(position));
+                    break;
+                case 5:
+                    startCardActivity(myShoes.get(position));
+                    break;
+                case 6:
+                    startCardActivity(myAccessories.get(position));
+                    break;
+                default:
+                    break;
+            }
 
         }
     };
@@ -151,7 +147,7 @@ public class MyClosetTabFragment extends Fragment {
         startActivity(intent);
     }
 
-    public void getAllShirts(){
+    public void getAllShirts() {
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -174,7 +170,7 @@ public class MyClosetTabFragment extends Fragment {
                 myShirts = new ArrayList<>();
                 for (int i = 0; i < garments.size(); i++) {
 
-                    if(myGarments.get(i).getCategory().equalsIgnoreCase("camiseta")){
+                    if (myGarments.get(i).getCategory().equalsIgnoreCase("camiseta")) {
 
                         myShirts.add(new Garment(myGarments.get(i)));
 
@@ -193,7 +189,7 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
-    public void getAllJackets(){
+    public void getAllJackets() {
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -216,7 +212,7 @@ public class MyClosetTabFragment extends Fragment {
                 myJackets = new ArrayList<>();
                 for (int i = 0; i < garments.size(); i++) {
 
-                    if(myGarments.get(i).getCategory().equalsIgnoreCase("chaqueta")){
+                    if (myGarments.get(i).getCategory().equalsIgnoreCase("chaqueta")) {
 
                         myJackets.add(new Garment(myGarments.get(i)));
 
@@ -234,7 +230,7 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
-    public void getAllJeans(){
+    public void getAllJeans() {
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -257,7 +253,7 @@ public class MyClosetTabFragment extends Fragment {
                 myJeans = new ArrayList<>();
                 for (int i = 0; i < garments.size(); i++) {
 
-                    if(myGarments.get(i).getCategory().equalsIgnoreCase("pantalón")){
+                    if (myGarments.get(i).getCategory().equalsIgnoreCase("pantalón")) {
 
                         myJeans.add(new Garment(myGarments.get(i)));
 
@@ -274,7 +270,6 @@ public class MyClosetTabFragment extends Fragment {
         });
 
     }
-
 
 
     public void getAllJerseys() {
@@ -300,7 +295,7 @@ public class MyClosetTabFragment extends Fragment {
                 myJerseys = new ArrayList<>();
                 for (int i = 0; i < garments.size(); i++) {
 
-                    if(myGarments.get(i).getCategory().equalsIgnoreCase("jersey")){
+                    if (myGarments.get(i).getCategory().equalsIgnoreCase("jersey")) {
 
                         myJerseys.add(new Garment(myGarments.get(i)));
 
@@ -318,7 +313,7 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
-    public void getAllAccessories(){
+    public void getAllAccessories() {
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -341,7 +336,7 @@ public class MyClosetTabFragment extends Fragment {
                 myAccessories = new ArrayList<>();
                 for (int i = 0; i < garments.size(); i++) {
 
-                    if(myGarments.get(i).getCategory().equalsIgnoreCase("Accesorio")){
+                    if (myGarments.get(i).getCategory().equalsIgnoreCase("Accesorio")) {
 
                         myAccessories.add(new Garment(myGarments.get(i)));
 
@@ -382,7 +377,7 @@ public class MyClosetTabFragment extends Fragment {
                 myShoes = new ArrayList<>();
                 for (int i = 0; i < garments.size(); i++) {
 
-                    if(myGarments.get(i).getCategory().equalsIgnoreCase("calzado")){
+                    if (myGarments.get(i).getCategory().equalsIgnoreCase("calzado")) {
 
                         myShoes.add(new Garment(myGarments.get(i)));
 

@@ -2,23 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="2dp" >
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/garment_pic"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:contentDescription="desc"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:contentDescription="desc" />
 
     <TextView
         android:id="@+id/garment_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@+id/garment_pic"
-        android:paddingBottom="10dp"
         android:text="txt"
         android:textSize="20sp" />
 
@@ -38,6 +38,7 @@
         android:layout_alignBaseline="@+id/garment_name"
         android:layout_alignBottom="@+id/garment_name"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
         android:text="txt"
         android:textSize="16sp" />
 

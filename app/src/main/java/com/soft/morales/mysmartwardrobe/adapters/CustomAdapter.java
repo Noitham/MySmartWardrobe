@@ -56,7 +56,7 @@ public class CustomAdapter extends BaseAdapter {
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_item, null);
+            convertView = mInflater.inflate(R.layout.list_item, null,false);
             holder = new ViewHolder();
 
             holder.garment_name = (TextView) convertView

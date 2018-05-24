@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,7 @@ public class MyClosetTabFragment extends Fragment {
 
     private ListView listView;
 
+
     List<Garment> myGarments, myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
 
     public MyClosetTabFragment(int position) {
@@ -55,7 +55,6 @@ public class MyClosetTabFragment extends Fragment {
         switch (mPosition) {
             case 1:
                 getAllShirts();
-
                 break;
             case 2:
                 getAllJeans();
@@ -176,7 +175,6 @@ public class MyClosetTabFragment extends Fragment {
                     if (myGarments.get(i).getCategory().equalsIgnoreCase("camiseta")) {
 
                         myShirts.add(new Garment(myGarments.get(i)));
-                        Log.d("ID: ", String.valueOf(myGarments.get(i).getId()));
 
                     }
 
@@ -401,5 +399,12 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
+    public ListView getListView() {
+        return listView;
+    }
+
+    public void setListView(ListView listView) {
+        this.listView = listView;
+    }
 
 }

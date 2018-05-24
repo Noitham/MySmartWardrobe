@@ -72,7 +72,6 @@ public class CardActivity extends AppCompatActivity {
 
                 AlertDialog diaBox = AskOption();
                 diaBox.show();
-                Toast.makeText(getApplicationContext(),"asdasd", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -88,6 +87,8 @@ public class CardActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Garment> call, Response<Garment> response) {
                 Toast.makeText(getApplicationContext(), "DELETED CORRECTLY", Toast.LENGTH_LONG).show();
+
+                finish();
 
             }
 

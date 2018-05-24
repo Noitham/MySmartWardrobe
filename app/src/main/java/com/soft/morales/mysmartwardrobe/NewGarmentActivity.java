@@ -133,12 +133,6 @@ public class NewGarmentActivity extends AppCompatActivity {
 
                 }.start();
 
-                Toast.makeText(getApplicationContext(),
-                              name.toString()
-                                + photo.toString() + category.toString()
-                                + season.toString() + price.toString()
-                                + color.toString() + size.toString() + brand.toString(), Toast.LENGTH_SHORT)
-                        .show();
             }
         });
 

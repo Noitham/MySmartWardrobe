@@ -9,16 +9,16 @@
 
     <ImageView
         android:id="@+id/torso_hombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="240dp"
+        android:layout_height="220dp"
         android:src="@drawable/torso_hombre"
         android:layout_gravity="center"
         android:layout_marginBottom="220dp"/>
 
     <ImageView
         android:id="@+id/pantalones_hombres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="160dp"
+        android:layout_height="180dp"
         android:src="@drawable/pantalon_hombre"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
@@ -26,8 +26,8 @@
 
     <ImageView
         android:id="@+id/pies_hombre"
-        android:layout_width="wrap_content"
-        android:layout_height="101dp"
+        android:layout_width="160dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="360dp"
         android:src="@drawable/pies_hombre" />

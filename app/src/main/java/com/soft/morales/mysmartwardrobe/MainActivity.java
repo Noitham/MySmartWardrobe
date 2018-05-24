@@ -55,10 +55,16 @@ public class MainActivity extends AppCompatActivity {
             boolean specialToolbarBehaviour;
             Class fragmentClass;
             fragmentClass = MyClosetFragment.class;
+            Bundle bundle = new Bundle();
+            bundle.putInt("mode", 1);
             specialToolbarBehaviour = true;
+
             Fragment fragment = null;
+
             try {
                 fragment = (Fragment) fragmentClass.newInstance();
+                fragment.setArguments(bundle);
+
             } catch (InstantiationException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

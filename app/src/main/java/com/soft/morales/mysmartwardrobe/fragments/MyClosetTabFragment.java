@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.soft.morales.mysmartwardrobe.CardActivity;
+import com.soft.morales.mysmartwardrobe.NewLookActivity;
 import com.soft.morales.mysmartwardrobe.R;
 import com.soft.morales.mysmartwardrobe.adapters.CustomAdapter;
 import com.soft.morales.mysmartwardrobe.model.Garment;
@@ -35,11 +36,17 @@ public class MyClosetTabFragment extends Fragment {
 
     private ListView listView;
 
+    int value;
 
     List<Garment> myGarments, myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
 
     public MyClosetTabFragment(int position) {
         mPosition = position;
+    }
+
+    public MyClosetTabFragment(int position, int mode) {
+        mPosition = position;
+        value = mode;
     }
 
     public MyClosetTabFragment() {
@@ -134,19 +141,29 @@ public class MyClosetTabFragment extends Fragment {
     };
 
     public void startCardActivity(Garment garment) {
-        Intent intent = new Intent(getActivity(), CardActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("ID", garment.id);
-        bundle.putString("Nombre", garment.name);
-        bundle.putString("Foto", garment.photo);
-        bundle.putString("Categoria", garment.category);
-        bundle.putString("Temporada", garment.season);
-        bundle.putString("Precio", garment.price);
-        bundle.putString("Color", garment.color);
-        bundle.putString("Talla", garment.size);
-        bundle.putString("Marca", garment.brand);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        if(value==1) {
+            Toast.makeText(getContext(), "Vengo del otro lao", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getActivity(), NewLookActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("Foto", garment.photo);
+            intent.putExtras(bundle);
+            startActivity(intent);
+
+        }else{
+            Intent intent = new Intent(getActivity(), CardActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("ID", garment.id);
+            bundle.putString("Nombre", garment.name);
+            bundle.putString("Foto", garment.photo);
+            bundle.putString("Categoria", garment.category);
+            bundle.putString("Temporada", garment.season);
+            bundle.putString("Precio", garment.price);
+            bundle.putString("Color", garment.color);
+            bundle.putString("Talla", garment.size);
+            bundle.putString("Marca", garment.brand);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     public void getAllShirts() {

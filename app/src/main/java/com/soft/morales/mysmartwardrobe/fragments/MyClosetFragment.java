@@ -16,6 +16,7 @@ public class MyClosetFragment extends Fragment {
 
 
     private TabLayout tabLayout;
+    int mode = 0;
     private ViewPager viewPager;
     private int[] tabIcons = {
             R.drawable.icon_shirt,
@@ -36,7 +37,10 @@ public class MyClosetFragment extends Fragment {
 
 
         viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
-
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mode = bundle.getInt("mode", -1);
+        }
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) rootView.findViewById(R.id.tabs);
@@ -66,13 +70,22 @@ public class MyClosetFragment extends Fragment {
     private void setupViewPager(ViewPager viewPager) {
 
         TabsAdapter tabsAdapter = new TabsAdapter(getChildFragmentManager());
-        tabsAdapter.addFragment(new MyClosetTabFragment(1));
-        tabsAdapter.addFragment(new MyClosetTabFragment(2));
-        tabsAdapter.addFragment(new MyClosetTabFragment(3));
-        tabsAdapter.addFragment(new MyClosetTabFragment(4));
-        tabsAdapter.addFragment(new MyClosetTabFragment(5));
-        tabsAdapter.addFragment(new MyClosetTabFragment(6));
 
+        if(mode==1) {
+            tabsAdapter.addFragment(new MyClosetTabFragment(1,mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(2,mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(3,mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(4,mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(5,mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(6,mode));
+        }else{
+            tabsAdapter.addFragment(new MyClosetTabFragment(1));
+            tabsAdapter.addFragment(new MyClosetTabFragment(2));
+            tabsAdapter.addFragment(new MyClosetTabFragment(3));
+            tabsAdapter.addFragment(new MyClosetTabFragment(4));
+            tabsAdapter.addFragment(new MyClosetTabFragment(5));
+            tabsAdapter.addFragment(new MyClosetTabFragment(6));
+        }
         viewPager.setAdapter(tabsAdapter);
 
     }

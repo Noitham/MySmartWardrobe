@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     int value = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
 
             value = getIntent().getExtras().getInt("ok");
+
+
         }
 
         fragmentManager = getSupportFragmentManager();

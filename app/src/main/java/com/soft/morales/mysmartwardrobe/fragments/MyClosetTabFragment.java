@@ -116,22 +116,22 @@ public class MyClosetTabFragment extends Fragment {
 
             switch (mPosition) {
                 case 1:
-                    startCardActivity(myShirts.get(position));
+                    startCardActivity(myShirts.get(position), mPosition);
                     break;
                 case 2:
-                    startCardActivity(myJeans.get(position));
+                    startCardActivity(myJeans.get(position), mPosition);
                     break;
                 case 3:
-                    startCardActivity(myJerseys.get(position));
+                    startCardActivity(myJerseys.get(position), mPosition);
                     break;
                 case 4:
-                    startCardActivity(myJackets.get(position));
+                    startCardActivity(myJackets.get(position), mPosition);
                     break;
                 case 5:
-                    startCardActivity(myShoes.get(position));
+                    startCardActivity(myShoes.get(position), mPosition);
                     break;
                 case 6:
-                    startCardActivity(myAccessories.get(position));
+                    startCardActivity(myAccessories.get(position), mPosition);
                     break;
                 default:
                     break;
@@ -140,16 +140,26 @@ public class MyClosetTabFragment extends Fragment {
         }
     };
 
-    public void startCardActivity(Garment garment) {
-        if(value==1) {
+    public void startCardActivity(Garment garment, int pos) {
+        if (value == 1) {
             Toast.makeText(getContext(), "Vengo del otro lao", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getActivity(), NewLookActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("Foto", garment.photo);
+            if (pos == 1) {
+                bundle.putString("Part", "Camiseta");
+
+            } else if (pos == 2) {
+                bundle.putString("Part", "Pantalones");
+
+            } else if (pos == 5) {
+                bundle.putString("Part", "Bambas");
+
+            }
             intent.putExtras(bundle);
             startActivity(intent);
 
-        }else{
+        } else {
             Intent intent = new Intent(getActivity(), CardActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("ID", garment.id);

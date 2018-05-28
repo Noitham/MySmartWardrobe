@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.soft.morales.mysmartwardrobe.model.Garment;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
@@ -63,9 +64,7 @@ public class CardActivity extends AppCompatActivity {
 
         Uri myUri = Uri.parse(URI);
 
-        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        imageView.getLayoutParams().width = 800;
-        imageView.setImageURI(myUri);
+        Glide.with(this).load(myUri).into(imageView);
 
         deleteButton.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {

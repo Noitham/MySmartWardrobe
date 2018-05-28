@@ -1,6 +1,7 @@
 package com.soft.morales.mysmartwardrobe.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,7 @@ import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,32 +57,32 @@ public class MyClosetTabFragment extends Fragment {
     }
 
 
-    public MyClosetTabFragment(int position, int mode,String foto1,String foto2,String foto3) {
+    public MyClosetTabFragment(int position, int mode, String foto1, String foto2, String foto3) {
         mPosition = position;
         value = mode;
 
         if (foto1 != null) {
             this.foto1 = foto1;
-            Log.d("Happy","Happy");
+            Log.d("Happy", "Happy");
 
-        }else{
-            Log.d("NONONO","NONONO");
+        } else {
+            Log.d("NONONO", "NONONO");
         }
 
         if (foto2 != null) {
             this.foto2 = foto2;
-            Log.d("Happy","Happy");
+            Log.d("Happy", "Happy");
 
-        }else{
-            Log.d("NONONO","NONONO");
+        } else {
+            Log.d("NONONO", "NONONO");
 
         }
         if (foto3 != null) {
             this.foto3 = foto3;
-            Log.d("Happy","Happy");
+            Log.d("Happy", "Happy");
 
-        }else{
-            Log.d("NONONO","NONONO");
+        } else {
+            Log.d("NONONO", "NONONO");
 
         }
     }
@@ -179,10 +181,11 @@ public class MyClosetTabFragment extends Fragment {
 
     public void startCardActivity(Garment garment, int pos) {
         if (value == 1) {
-            Toast.makeText(getContext(), "Vengo del otro lao", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(getActivity(), NewLookActivity.class);
             Bundle bundle = new Bundle();
+
             bundle.putString("Foto", garment.photo);
+
             if (pos == 1) {
                 bundle.putString("Part", "Camiseta");
 
@@ -194,26 +197,13 @@ public class MyClosetTabFragment extends Fragment {
 
             }
 
-            if (foto1 != null) {
-                bundle.putString("foto1",foto1);
-                Log.d("PUTEd","PUTED");
-
-            }
-
-            if (foto2 != null) {
-                bundle.putString("foto2",foto2);
-                Log.d("PUTEd","PUTED");
-
-            }
-            if (foto3 != null) {
-                bundle.putString("foto3",foto3);
-                Log.d("PUTEd","PUTED");
-            }
-
-
 
             intent.putExtras(bundle);
-            startActivity(intent);
+            if (getActivity() != null) {
+                getActivity().setResult(Activity.RESULT_OK, intent);
+                getActivity().finish();
+            }
+
 
         } else {
             Intent intent = new Intent(getActivity(), CardActivity.class);
@@ -236,32 +226,16 @@ public class MyClosetTabFragment extends Fragment {
 
         mAPIService = ApiUtils.getAPIService();
 
-        Call<List<Garment>> call = mAPIService.getGarment();
+        HashMap query = new HashMap();
+        query.put("category", "Camiseta");
+
+        Call<List<Garment>> call = mAPIService.getGarment(query);
 
         call.enqueue(new Callback<List<Garment>>() {
             @Override
             public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
 
-                List<Garment> garments = response.body();
-
-                myGarments = new ArrayList<>();
-
-                for (int i = 0; i < garments.size(); i++) {
-
-                    myGarments.add(new Garment(garments.get(i)));
-
-                }
-
-                myShirts = new ArrayList<>();
-                for (int i = 0; i < garments.size(); i++) {
-
-                    if (myGarments.get(i).getCategory().equalsIgnoreCase("camiseta")) {
-
-                        myShirts.add(new Garment(myGarments.get(i)));
-
-                    }
-
-                }
+                myShirts = response.body();
                 fillListView(myShirts);
             }
 
@@ -277,35 +251,16 @@ public class MyClosetTabFragment extends Fragment {
 
         mAPIService = ApiUtils.getAPIService();
 
-        Call<List<Garment>> call = mAPIService.getGarment();
+        HashMap query = new HashMap();
+        query.put("category", "chaqueta");
+
+        Call<List<Garment>> call = mAPIService.getGarment(query);
 
         call.enqueue(new Callback<List<Garment>>() {
             @Override
             public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
 
-                List<Garment> garments = response.body();
-
-                myGarments = new ArrayList<>();
-
-                for (int i = 0; i < garments.size(); i++) {
-
-                    myGarments.add(new Garment(garments.get(i)));
-
-
-                }
-
-                myJackets = new ArrayList<>();
-                for (int i = 0; i < garments.size(); i++) {
-
-                    if (myGarments.get(i).getCategory().equalsIgnoreCase("chaqueta")) {
-
-                        myJackets.add(new Garment(myGarments.get(i)));
-
-                    }
-
-
-                }
-
+                myJackets = response.body();
                 fillListView(myJackets);
             }
 
@@ -321,32 +276,16 @@ public class MyClosetTabFragment extends Fragment {
 
         mAPIService = ApiUtils.getAPIService();
 
-        Call<List<Garment>> call = mAPIService.getGarment();
+        HashMap query = new HashMap();
+        query.put("category", "pantalón");
+
+        Call<List<Garment>> call = mAPIService.getGarment(query);
 
         call.enqueue(new Callback<List<Garment>>() {
             @Override
             public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
 
-                List<Garment> garments = response.body();
-
-                myGarments = new ArrayList<>();
-
-                for (int i = 0; i < garments.size(); i++) {
-
-                    myGarments.add(new Garment(garments.get(i)));
-
-                }
-
-                myJeans = new ArrayList<>();
-                for (int i = 0; i < garments.size(); i++) {
-
-                    if (myGarments.get(i).getCategory().equalsIgnoreCase("pantalón")) {
-
-                        myJeans.add(new Garment(myGarments.get(i)));
-
-                    }
-                }
-
+                myJeans = response.body();
                 fillListView(myJeans);
             }
 
@@ -355,7 +294,6 @@ public class MyClosetTabFragment extends Fragment {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
 
@@ -363,32 +301,16 @@ public class MyClosetTabFragment extends Fragment {
 
         mAPIService = ApiUtils.getAPIService();
 
-        Call<List<Garment>> call = mAPIService.getGarment();
+        HashMap query = new HashMap();
+        query.put("category", "jersey");
+
+        Call<List<Garment>> call = mAPIService.getGarment(query);
 
         call.enqueue(new Callback<List<Garment>>() {
             @Override
             public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
 
-                List<Garment> garments = response.body();
-
-                myGarments = new ArrayList<>();
-
-                for (int i = 0; i < garments.size(); i++) {
-
-                    myGarments.add(new Garment(garments.get(i)));
-
-                }
-
-                myJerseys = new ArrayList<>();
-                for (int i = 0; i < garments.size(); i++) {
-
-                    if (myGarments.get(i).getCategory().equalsIgnoreCase("jersey")) {
-
-                        myJerseys.add(new Garment(myGarments.get(i)));
-
-                    }
-                }
-
+                myJerseys = response.body();
                 fillListView(myJerseys);
             }
 
@@ -397,39 +319,22 @@ public class MyClosetTabFragment extends Fragment {
                 Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
     }
 
     public void getAllAccessories() {
 
         mAPIService = ApiUtils.getAPIService();
 
-        Call<List<Garment>> call = mAPIService.getGarment();
+        HashMap query = new HashMap();
+        query.put("category", "Accesorio");
+
+        Call<List<Garment>> call = mAPIService.getGarment(query);
 
         call.enqueue(new Callback<List<Garment>>() {
             @Override
             public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
 
-                List<Garment> garments = response.body();
-
-                myGarments = new ArrayList<>();
-
-                for (int i = 0; i < garments.size(); i++) {
-
-                    myGarments.add(new Garment(garments.get(i)));
-
-                }
-
-                myAccessories = new ArrayList<>();
-                for (int i = 0; i < garments.size(); i++) {
-
-                    if (myGarments.get(i).getCategory().equalsIgnoreCase("Accesorio")) {
-
-                        myAccessories.add(new Garment(myGarments.get(i)));
-
-                    }
-                }
-
+                myAccessories = response.body();
                 fillListView(myAccessories);
             }
 
@@ -445,32 +350,16 @@ public class MyClosetTabFragment extends Fragment {
 
         mAPIService = ApiUtils.getAPIService();
 
-        Call<List<Garment>> call = mAPIService.getGarment();
+        HashMap query = new HashMap();
+        query.put("category", "calzado");
+
+        Call<List<Garment>> call = mAPIService.getGarment(query);
 
         call.enqueue(new Callback<List<Garment>>() {
             @Override
             public void onResponse(Call<List<Garment>> call, Response<List<Garment>> response) {
 
-                List<Garment> garments = response.body();
-
-                myGarments = new ArrayList<>();
-
-                for (int i = 0; i < garments.size(); i++) {
-
-                    myGarments.add(new Garment(garments.get(i)));
-
-                }
-
-                myShoes = new ArrayList<>();
-                for (int i = 0; i < garments.size(); i++) {
-
-                    if (myGarments.get(i).getCategory().equalsIgnoreCase("calzado")) {
-
-                        myShoes.add(new Garment(myGarments.get(i)));
-
-                    }
-                }
-
+                myShoes = response.body();
                 fillListView(myShoes);
             }
 

@@ -17,13 +17,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 public class NewLookActivity extends AppCompatActivity {
+
+    private static final int FOTO_REQUEST = 456;
 
     ImageView imgTorso, imgLegs, imgFeets;
 
-    private String uriTorso, uriLegs, uriFeets;
     Intent intent2;
-    private String myTorso, myLegs, myFeets;
 
     String myString = null;
 
@@ -54,98 +56,6 @@ public class NewLookActivity extends AppCompatActivity {
 
         butonDelete = (android.support.design.widget.FloatingActionButton) findViewById(R.id.deleteLook);
         buttonFavourite = (android.support.design.widget.FloatingActionButton) findViewById(R.id.addLook);
-
-        if (bundle != null) {
-            foto = bundle.getString("Foto", "");
-            part = bundle.getString("Part", "");
-            foto1 = bundle.getString("foto1", null);
-            foto2 = bundle.getString("foto2", null);
-            foto3 = bundle.getString("foto3", null);
-            Log.d("URIa:", foto);
-
-            if(foto1!=null) {
-                Log.d("URIb:", foto1);
-
-            }
-            if(foto2!=null) {
-                Log.d("URIc:", foto2);
-
-            }
-            if(foto3!=null) {
-                Log.d("URId:", foto3);
-
-            }
-
-            BitmapFactory.Options options = new BitmapFactory.Options();
-
-            Log.d("PART:", part);
-
-
-            if (myTorso != null) {
-                myLegs = foto1;
-                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myTorso).getPath(), options);
-                imgTorso.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgTorso.setImageBitmap(bitmap2);
-            }
-
-            if (myLegs != null) {
-                myLegs = foto2;
-                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myLegs).getPath(), options);
-                imgLegs.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgLegs.setImageBitmap(bitmap2);
-            }
-
-            if (myFeets != null) {
-                myFeets = foto3;
-                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myFeets).getPath(), options);
-                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgFeets.setImageBitmap(bitmap2);
-            }
-
-
-            if (part.equalsIgnoreCase("Camiseta")) {
-                uriTorso = foto;
-                final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(foto).getPath(), options);
-
-                imgTorso.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgTorso.setImageBitmap(bitmap);
-            } else if (part.equalsIgnoreCase("Pantalones")) {
-                uriLegs = foto;
-                final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(foto).getPath(), options);
-
-                imgLegs.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgLegs.setImageBitmap(bitmap);
-            } else if (part.equalsIgnoreCase("Bambas")) {
-                uriFeets = foto;
-                final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(foto).getPath(), options);
-
-                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgFeets.setImageBitmap(bitmap);
-            }
-
-            if(foto1!=null){
-                uriTorso = foto1;
-                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(uriTorso).getPath(), options);
-                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgFeets.setImageBitmap(bitmap2);
-            }else if(foto2!=null){
-                uriLegs = foto2;
-                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(uriLegs).getPath(), options);
-                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgFeets.setImageBitmap(bitmap2);
-            }else if(foto3!=null){
-                uriFeets = foto3;
-                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(uriFeets).getPath(), options);
-                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                imgFeets.setImageBitmap(bitmap2);
-
-            }
-
-        } else {
-            Toast.makeText(getApplicationContext(),
-                    "Bundle vacío", Toast.LENGTH_SHORT)
-                    .show();
-        }
 
 
         imgTorso.setOnClickListener(new FloatingActionButton.OnClickListener() {
@@ -190,57 +100,62 @@ public class NewLookActivity extends AppCompatActivity {
 
 
     public void setTorso() {
-        intent2 = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("ok", 1);
-        bundle.putString("foto",foto);
-        bundle.putString("foto1",foto);
-        bundle.putString("foto2",foto2);
-        bundle.putString("foto3",foto3);
 
+        intent2 = new Intent(this, MainActivity.class);
         intent2.putExtras(bundle);
-        startActivity(intent2);
-        if (myString != null) {
 
-            Log.d("YOU MUST RUN:", myString);
-
-        } else {
-            Log.d("NOT ENTERING:", "MIAU");
-
-        }
-        finish();
-
+        startActivityForResult(intent2, FOTO_REQUEST);
     }
 
 
     public void setLegs() {
-        intent2 = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("ok", 1);
-        bundle.putString("foto",foto);
-        bundle.putString("foto2",foto);
-        bundle.putString("foto1",foto1);
-        bundle.putString("foto3",foto3);
+
+        intent2 = new Intent(this, MainActivity.class);
         intent2.putExtras(bundle);
-        startActivity(intent2);
-        finish();
+
+        startActivityForResult(intent2, FOTO_REQUEST);
 
     }
 
     public void setFeets() {
-
-        intent2 = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("ok", 1);
-        bundle.putString("foto",foto);
 
-        bundle.putString("foto1",foto1);
-        bundle.putString("foto2",foto2);
-        bundle.putString("foto3",foto);
-
+        intent2 = new Intent(this, MainActivity.class);
         intent2.putExtras(bundle);
-        startActivity(intent2);
-        finish();
+
+        startActivityForResult(intent2, FOTO_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == FOTO_REQUEST && resultCode == RESULT_OK) {
+            Bundle bundle = data.getExtras();
+
+            if (bundle != null) {
+                part = bundle.getString("Part", "");
+                foto = bundle.getString("Foto", "");
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+
+                if (part.equalsIgnoreCase("Camiseta")) {
+                    Glide.with(this).load(Uri.parse(foto)).into(imgTorso);
+                } else if (part.equalsIgnoreCase("Pantalones")) {
+                    Glide.with(this).load(Uri.parse(foto)).into(imgLegs);
+                } else if (part.equalsIgnoreCase("Bambas")) {
+                    Glide.with(this).load(Uri.parse(foto)).into(imgFeets);
+                }
+
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Bundle vacío", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
     }
 
     @Override
@@ -274,35 +189,7 @@ public class NewLookActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        /*
-        if (lookPrueba.getTorso() != null) {
-            myTorso = lookPrueba.getTorso();
-            Log.d("TORSO:", String.valueOf(myTorso));
-            final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myTorso).getPath(), options);
-            imgTorso.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imgTorso.setImageBitmap(bitmap2);
-        } else if (lookPrueba.getLegs() != null) {
-            myLegs = lookPrueba.getLegs();
-            Log.d("LEGS:", String.valueOf(myLegs));
-            final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myLegs).getPath(), options);
-            imgLegs.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imgLegs.setImageBitmap(bitmap2);
-        } else if (lookPrueba.getFeets() != null) {
-            myFeets = lookPrueba.getFeets();
-            Log.d("FEETS:", String.valueOf(myFeets));
-            final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myFeets).getPath(), options);
-            imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            imgFeets.setImageBitmap(bitmap2);
-        }
-            */
-    }
-
-    private AlertDialog askAddFavourite()
-    {
+    private AlertDialog askAddFavourite() {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Confirm")
@@ -329,8 +216,7 @@ public class NewLookActivity extends AppCompatActivity {
 
     }
 
-    private AlertDialog askDelete()
-    {
+    private AlertDialog askDelete() {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Confirm")

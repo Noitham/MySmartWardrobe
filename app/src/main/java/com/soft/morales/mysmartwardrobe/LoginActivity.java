@@ -2,7 +2,9 @@ package com.soft.morales.mysmartwardrobe;
 
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -14,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.soft.morales.mysmartwardrobe.model.User;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
@@ -43,9 +46,9 @@ public class LoginActivity extends AppCompatActivity {
     @InjectView(R.id.link_signup)
     TextView signupLink;
 
-    int idUser = 0;
+    User user;
     String emailUser = null;
-    String nameUser = null;
+
 
     private APIService mAPIService;
 
@@ -68,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
             emailText.setText(emailUser);
 
-        }else{
+        } else {
             Log.d("LOGIN: ", "BUNDLE EMPTY");
         }
 
@@ -129,10 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (email.equalsIgnoreCase(emails.get(i).toString()) && password.equalsIgnoreCase(passwords.get(i).toString())) {
 
                                     Log.d("LOGIN: ", "OK");
-                                    idUser = Integer.parseInt(myUsers.get(i).getId());
-                                    nameUser = myUsers.get(i).getName();
-                                    emailUser = myUsers.get(i).getEmail();
-                                    // On complete call either onLoginSuccess or onLoginFailed
+                                    user = myUsers.get(i);
                                     onLoginSuccess();
 
                                 } else {
@@ -193,8 +193,6 @@ public class LoginActivity extends AppCompatActivity {
                 // TODO: Implement successful signup logic here
                 // By default we just finish the Activity and log them in automatically
                 Bundle bun = new Bundle();
-                bun.putInt("id", idUser);
-                bun.putString("name", nameUser);
                 bun.putString("email", emailUser);
 
                 Intent intent2 = new Intent(this, MainActivity.class);
@@ -214,14 +212,14 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         loginButton.setEnabled(true);
-        Bundle bun = new Bundle();
-        bun.putInt("id", idUser);
-        bun.putString("name", nameUser);
-        bun.putString("email", emailUser);
+
+        Gson gson = new Gson();
+        String userJson = gson.toJson(user);
+
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        sharedPref.edit().putString("user", userJson).apply();
 
         Intent intent2 = new Intent(this, MainActivity.class);
-        intent2.putExtras(bun);
-        intent2.putExtra("jhj", "asd");
 
         startActivity(intent2);
         finish();

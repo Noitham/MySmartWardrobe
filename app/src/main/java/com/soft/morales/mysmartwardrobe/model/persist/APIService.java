@@ -13,7 +13,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 public interface APIService {
@@ -37,6 +36,7 @@ public interface APIService {
             @Field("category") String category,
             @Field("season") String season,
             @Field("price") String price,
+            @Field("username") String username,
             @Field("color") String color,
             @Field("size") String size,
             @Field("brand") String brand);

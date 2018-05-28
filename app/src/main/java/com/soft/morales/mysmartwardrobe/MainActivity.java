@@ -1,7 +1,9 @@
 package com.soft.morales.mysmartwardrobe;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,9 +22,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.soft.morales.mysmartwardrobe.fragments.CalendarFragment;
 import com.soft.morales.mysmartwardrobe.fragments.MyClosetFragment;
 import com.soft.morales.mysmartwardrobe.fragments.SettingsFragment;
+import com.soft.morales.mysmartwardrobe.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,28 +54,23 @@ public class MainActivity extends AppCompatActivity {
 
         setupView();
 
+        SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+
+        Gson gson = new Gson();
+        User user = gson.fromJson(sp.getString("user", ""), User.class);
+
+        nameDrawer.setText(user.name);
+        emailDrawer.setText(user.email);
+
         if (getIntent().getExtras() != null) {
 
             value = getIntent().getExtras().getInt("ok");
             id = getIntent().getExtras().getInt("id");
-            name = getIntent().getExtras().getString("name");
-            email = getIntent().getExtras().getString("email");
-            foto1=getIntent().getExtras().getString("foto1");
-            foto2=getIntent().getExtras().getString("foto2");
-            foto3=getIntent().getExtras().getString("foto3");
-
-            Log.d("NICE: ", "BUNDKE NOT EMPTY");
-            Log.d("NICE: ", String.valueOf(name));
-
-            nameDrawer.setText(name);
-            emailDrawer.setText(email);
-
-        }else{
+        } else {
             Log.d("ERROR: ", "BUNDKE EMPTY");
         }
 
         fragmentManager = getSupportFragmentManager();
-
 
 
         if (savedInstanceState == null) showHome();
@@ -86,17 +85,17 @@ public class MainActivity extends AppCompatActivity {
             bundle.putString("foto2", foto2);
             bundle.putString("foto3", foto3);
 
-            if(foto1!=null){
-                Log.d("Happy","Happy");
-            }else{
-                Log.d("SOC EN BOBOBO","    .");
+            if (foto1 != null) {
+                Log.d("Happy", "Happy");
+            } else {
+                Log.d("SOC EN BOBOBO", "    .");
             }
 
 
-            if(foto2!=null){
-                Log.d("Happy","Happy");
-            }else{
-                Log.d("SOC EN BOBOBO","    .");
+            if (foto2 != null) {
+                Log.d("Happy", "Happy");
+            } else {
+                Log.d("SOC EN BOBOBO", "    .");
             }
 
             specialToolbarBehaviour = true;
@@ -123,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         if (getIntent().getExtras() != null) {
@@ -136,14 +135,14 @@ public class MainActivity extends AppCompatActivity {
             emailDrawer.setText(email);
             Log.d("NICE: ", "BUNDKE NOT EMPTY");
 
-        }else{
+        } else {
             Log.d("ERROR: ", "BUNDKE EMPTY");
         }
 
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
 
         if (this.getIntent().getExtras() != null) {
@@ -157,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             nameDrawer.setText(name);
             emailDrawer.setText(email);
 
-        }else{
+        } else {
             Log.d("ERROR: ", "BUNDKE EMPTY");
         }
 
@@ -264,10 +263,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void gotoLogin(View view) {
 
-        if(nameDrawer.getText().equals("Unregistered user")){
+        if (nameDrawer.getText().equals("Unregistered user")) {
             Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(mainIntent);
-        }else{
+        } else {
 
         }
     }

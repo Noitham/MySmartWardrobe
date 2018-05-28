@@ -2,7 +2,9 @@ package com.soft.morales.mysmartwardrobe.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,11 +16,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.soft.morales.mysmartwardrobe.CardActivity;
 import com.soft.morales.mysmartwardrobe.NewLookActivity;
 import com.soft.morales.mysmartwardrobe.R;
 import com.soft.morales.mysmartwardrobe.adapters.CustomAdapter;
 import com.soft.morales.mysmartwardrobe.model.Garment;
+import com.soft.morales.mysmartwardrobe.model.User;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
@@ -46,6 +50,7 @@ public class MyClosetTabFragment extends Fragment {
     String foto3;
 
     List<Garment> myGarments, myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
+    private User mUser;
 
     public MyClosetTabFragment(int position) {
         mPosition = position;
@@ -95,6 +100,10 @@ public class MyClosetTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab, container, false);
+
+        Gson gson = new Gson();
+        SharedPreferences shared = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        mUser = gson.fromJson(shared.getString("user", ""), User.class);
 
         listView = (ListView) container.findViewById(R.id.listview);
 
@@ -227,7 +236,10 @@ public class MyClosetTabFragment extends Fragment {
         mAPIService = ApiUtils.getAPIService();
 
         HashMap query = new HashMap();
+
+
         query.put("category", "Camiseta");
+        query.put("username", mUser.getEmail());
 
         Call<List<Garment>> call = mAPIService.getGarment(query);
 
@@ -253,6 +265,7 @@ public class MyClosetTabFragment extends Fragment {
 
         HashMap query = new HashMap();
         query.put("category", "chaqueta");
+        query.put("username", mUser.getEmail());
 
         Call<List<Garment>> call = mAPIService.getGarment(query);
 
@@ -278,6 +291,7 @@ public class MyClosetTabFragment extends Fragment {
 
         HashMap query = new HashMap();
         query.put("category", "pantalón");
+        query.put("username", mUser.getEmail());
 
         Call<List<Garment>> call = mAPIService.getGarment(query);
 
@@ -303,6 +317,7 @@ public class MyClosetTabFragment extends Fragment {
 
         HashMap query = new HashMap();
         query.put("category", "jersey");
+        query.put("username", mUser.getEmail());
 
         Call<List<Garment>> call = mAPIService.getGarment(query);
 
@@ -327,6 +342,7 @@ public class MyClosetTabFragment extends Fragment {
 
         HashMap query = new HashMap();
         query.put("category", "Accesorio");
+        query.put("username", mUser.getEmail());
 
         Call<List<Garment>> call = mAPIService.getGarment(query);
 
@@ -352,6 +368,7 @@ public class MyClosetTabFragment extends Fragment {
 
         HashMap query = new HashMap();
         query.put("category", "calzado");
+        query.put("username", mUser.getEmail());
 
         Call<List<Garment>> call = mAPIService.getGarment(query);
 

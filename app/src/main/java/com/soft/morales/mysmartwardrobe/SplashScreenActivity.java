@@ -1,10 +1,14 @@
 package com.soft.morales.mysmartwardrobe;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+
+import com.soft.morales.mysmartwardrobe.model.User;
 
 public class SplashScreenActivity extends Activity {
 
@@ -26,10 +30,16 @@ public class SplashScreenActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                startActivity(mainIntent);
-                
+
+                SharedPreferences shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                String userString = shared.getString("user", "");
+
+                Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                if (!userString.equals("")) {
+                    intent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                }
+
+                startActivity(intent);
                 finish();
             }
         }, SPLASH_DISPLAY_LENGTH);

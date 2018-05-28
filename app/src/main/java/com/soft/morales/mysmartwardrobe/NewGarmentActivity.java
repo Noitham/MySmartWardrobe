@@ -2,8 +2,10 @@ package com.soft.morales.mysmartwardrobe;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -29,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -37,6 +40,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.soft.morales.mysmartwardrobe.model.Garment;
+import com.soft.morales.mysmartwardrobe.model.User;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
@@ -128,7 +132,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish() {
-                        sendPost(name,photo,category,season,price,color,size,brand);
+                        sendPost(name, photo, category, season, price, color, size, brand);
                     }
 
                 }.start();
@@ -144,7 +148,7 @@ public class NewGarmentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Garment> call, Response<Garment> response) {
 
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     Log.d("OK: ", "post submitted to API." + response.body().toString());
                 }
             }
@@ -160,11 +164,15 @@ public class NewGarmentActivity extends AppCompatActivity {
     public void sendPost(String name, String photo, String category, String season, String price,
                          String color, String size, String brand) {
 
-        mAPIService.savePost(name,photo,category,season,price,color,size,brand).enqueue(new Callback<Garment>() {
+        Gson gson = new Gson();
+        SharedPreferences shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        User user = gson.fromJson(shared.getString("user", ""), User.class);
+
+        mAPIService.savePost(name, photo, category, season, price, user.email, color, size, brand).enqueue(new Callback<Garment>() {
             @Override
             public void onResponse(Call<Garment> call, Response<Garment> response) {
 
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     Log.d("OK: ", "post submitted to API." + response.body().toString());
                 }
             }
@@ -207,8 +215,8 @@ public class NewGarmentActivity extends AppCompatActivity {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
 
                 return v;
@@ -216,7 +224,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
             }
 
         };
@@ -243,8 +251,8 @@ public class NewGarmentActivity extends AppCompatActivity {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
 
                 return v;
@@ -252,7 +260,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
             }
 
         };
@@ -276,8 +284,8 @@ public class NewGarmentActivity extends AppCompatActivity {
 
                 View v = super.getView(position, convertView, parent);
                 if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
                 }
 
                 return v;
@@ -285,7 +293,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
             @Override
             public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
+                return super.getCount() - 1; // you dont display last item. It is used as hint.
             }
 
         };
@@ -302,7 +310,6 @@ public class NewGarmentActivity extends AppCompatActivity {
         spinnerSize.setSelection(adapterSize.getCount()); //display hint
 
     }
-
 
 
     /*

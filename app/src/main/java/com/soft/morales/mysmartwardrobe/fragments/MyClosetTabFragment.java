@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,10 @@ public class MyClosetTabFragment extends Fragment {
 
     int value;
 
+    String foto1;
+    String foto2;
+    String foto3;
+
     List<Garment> myGarments, myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
 
     public MyClosetTabFragment(int position) {
@@ -48,6 +53,38 @@ public class MyClosetTabFragment extends Fragment {
         mPosition = position;
         value = mode;
     }
+
+
+    public MyClosetTabFragment(int position, int mode,String foto1,String foto2,String foto3) {
+        mPosition = position;
+        value = mode;
+
+        if (foto1 != null) {
+            this.foto1 = foto1;
+            Log.d("Happy","Happy");
+
+        }else{
+            Log.d("NONONO","NONONO");
+        }
+
+        if (foto2 != null) {
+            this.foto2 = foto2;
+            Log.d("Happy","Happy");
+
+        }else{
+            Log.d("NONONO","NONONO");
+
+        }
+        if (foto3 != null) {
+            this.foto3 = foto3;
+            Log.d("Happy","Happy");
+
+        }else{
+            Log.d("NONONO","NONONO");
+
+        }
+    }
+
 
     public MyClosetTabFragment() {
     }
@@ -156,6 +193,25 @@ public class MyClosetTabFragment extends Fragment {
                 bundle.putString("Part", "Bambas");
 
             }
+
+            if (foto1 != null) {
+                bundle.putString("foto1",foto1);
+                Log.d("PUTEd","PUTED");
+
+            }
+
+            if (foto2 != null) {
+                bundle.putString("foto2",foto2);
+                Log.d("PUTEd","PUTED");
+
+            }
+            if (foto3 != null) {
+                bundle.putString("foto3",foto3);
+                Log.d("PUTEd","PUTED");
+            }
+
+
+
             intent.putExtras(bundle);
             startActivity(intent);
 

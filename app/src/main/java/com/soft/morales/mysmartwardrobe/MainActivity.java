@@ -37,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout frameLayout;
     String name;
     String email;
+    String foto1;
+    String foto2;
+    String foto3;
     int id;
     int value = 0;
 
@@ -53,6 +56,10 @@ public class MainActivity extends AppCompatActivity {
             id = getIntent().getExtras().getInt("id");
             name = getIntent().getExtras().getString("name");
             email = getIntent().getExtras().getString("email");
+            foto1=getIntent().getExtras().getString("foto1");
+            foto2=getIntent().getExtras().getString("foto2");
+            foto3=getIntent().getExtras().getString("foto3");
+
             Log.d("NICE: ", "BUNDKE NOT EMPTY");
             Log.d("NICE: ", String.valueOf(name));
 
@@ -75,6 +82,23 @@ public class MainActivity extends AppCompatActivity {
             fragmentClass = MyClosetFragment.class;
             Bundle bundle = new Bundle();
             bundle.putInt("mode", 1);
+            bundle.putString("foto1", foto1);
+            bundle.putString("foto2", foto2);
+            bundle.putString("foto3", foto3);
+
+            if(foto1!=null){
+                Log.d("Happy","Happy");
+            }else{
+                Log.d("SOC EN BOBOBO","    .");
+            }
+
+
+            if(foto2!=null){
+                Log.d("Happy","Happy");
+            }else{
+                Log.d("SOC EN BOBOBO","    .");
+            }
+
             specialToolbarBehaviour = true;
 
             Fragment fragment = null;
@@ -204,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         setToolbarElevation(specialToolbarBehaviour);
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());

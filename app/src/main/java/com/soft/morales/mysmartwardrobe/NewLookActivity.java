@@ -22,7 +22,7 @@ public class NewLookActivity extends AppCompatActivity {
     ImageView imgTorso, imgLegs, imgFeets;
 
     private String uriTorso, uriLegs, uriFeets;
-
+    Intent intent2;
     private String myTorso, myLegs, myFeets;
 
     String myString = null;
@@ -30,6 +30,11 @@ public class NewLookActivity extends AppCompatActivity {
     android.support.design.widget.FloatingActionButton buttonFavourite, butonDelete;
 
     private String foto;
+
+    String foto1;
+    String foto2;
+    String foto3;
+
     private String part;
 
 
@@ -53,33 +58,45 @@ public class NewLookActivity extends AppCompatActivity {
         if (bundle != null) {
             foto = bundle.getString("Foto", "");
             part = bundle.getString("Part", "");
-            Log.d("URI:", foto);
+            foto1 = bundle.getString("foto1", null);
+            foto2 = bundle.getString("foto2", null);
+            foto3 = bundle.getString("foto3", null);
+            Log.d("URIa:", foto);
+
+            if(foto1!=null) {
+                Log.d("URIb:", foto1);
+
+            }
+            if(foto2!=null) {
+                Log.d("URIc:", foto2);
+
+            }
+            if(foto3!=null) {
+                Log.d("URId:", foto3);
+
+            }
 
             BitmapFactory.Options options = new BitmapFactory.Options();
 
-            final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(foto).getPath(), options);
             Log.d("PART:", part);
 
 
             if (myTorso != null) {
-                myTorso = savedInstanceState.getString("uriTorso");
-
+                myLegs = foto1;
                 final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myTorso).getPath(), options);
                 imgTorso.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgTorso.setImageBitmap(bitmap2);
             }
 
             if (myLegs != null) {
-                myLegs = savedInstanceState.getString("uriLegs");
-
+                myLegs = foto2;
                 final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myLegs).getPath(), options);
                 imgLegs.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgLegs.setImageBitmap(bitmap2);
             }
 
             if (myFeets != null) {
-                myFeets = savedInstanceState.getString("uriFeets");
-
+                myFeets = foto3;
                 final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(myFeets).getPath(), options);
                 imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgFeets.setImageBitmap(bitmap2);
@@ -88,17 +105,42 @@ public class NewLookActivity extends AppCompatActivity {
 
             if (part.equalsIgnoreCase("Camiseta")) {
                 uriTorso = foto;
+                final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(foto).getPath(), options);
+
                 imgTorso.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgTorso.setImageBitmap(bitmap);
             } else if (part.equalsIgnoreCase("Pantalones")) {
                 uriLegs = foto;
+                final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(foto).getPath(), options);
+
                 imgLegs.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgLegs.setImageBitmap(bitmap);
             } else if (part.equalsIgnoreCase("Bambas")) {
                 uriFeets = foto;
+                final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(foto).getPath(), options);
+
                 imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 imgFeets.setImageBitmap(bitmap);
             }
+
+            if(foto1!=null){
+                uriTorso = foto1;
+                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(uriTorso).getPath(), options);
+                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imgFeets.setImageBitmap(bitmap2);
+            }else if(foto2!=null){
+                uriLegs = foto2;
+                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(uriLegs).getPath(), options);
+                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imgFeets.setImageBitmap(bitmap2);
+            }else if(foto3!=null){
+                uriFeets = foto3;
+                final Bitmap bitmap2 = BitmapFactory.decodeFile(Uri.parse(uriFeets).getPath(), options);
+                imgFeets.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                imgFeets.setImageBitmap(bitmap2);
+
+            }
+
         } else {
             Toast.makeText(getApplicationContext(),
                     "Bundle vacío", Toast.LENGTH_SHORT)
@@ -148,9 +190,14 @@ public class NewLookActivity extends AppCompatActivity {
 
 
     public void setTorso() {
-        Intent intent2 = new Intent(this, MainActivity.class);
+        intent2 = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("ok", 1);
+        bundle.putString("foto",foto);
+        bundle.putString("foto1",foto);
+        bundle.putString("foto2",foto2);
+        bundle.putString("foto3",foto3);
+
         intent2.putExtras(bundle);
         startActivity(intent2);
         if (myString != null) {
@@ -167,9 +214,13 @@ public class NewLookActivity extends AppCompatActivity {
 
 
     public void setLegs() {
-        Intent intent2 = new Intent(this, MainActivity.class);
+        intent2 = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("ok", 1);
+        bundle.putString("foto",foto);
+        bundle.putString("foto2",foto);
+        bundle.putString("foto1",foto1);
+        bundle.putString("foto3",foto3);
         intent2.putExtras(bundle);
         startActivity(intent2);
         finish();
@@ -178,9 +229,15 @@ public class NewLookActivity extends AppCompatActivity {
 
     public void setFeets() {
 
-        Intent intent2 = new Intent(this, MainActivity.class);
+        intent2 = new Intent(this, MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putInt("ok", 1);
+        bundle.putString("foto",foto);
+
+        bundle.putString("foto1",foto1);
+        bundle.putString("foto2",foto2);
+        bundle.putString("foto3",foto);
+
         intent2.putExtras(bundle);
         startActivity(intent2);
         finish();
@@ -211,9 +268,7 @@ public class NewLookActivity extends AppCompatActivity {
         super.onDestroy();
 /*
         lookPrueba.setTorso(myTorso);
-
         lookPrueba.setLegs(myLegs);
-
         lookPrueba.setFeets(myFeets);
 */
 
@@ -304,6 +359,4 @@ public class NewLookActivity extends AppCompatActivity {
 
 
 }
-
-
 

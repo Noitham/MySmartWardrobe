@@ -60,6 +60,18 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
 
+        if (getIntent().getExtras() != null) {
+
+            emailUser = getIntent().getExtras().getString("email");
+            Log.d("NICE: ", "BUNDKE NOT EMPTY");
+            Log.d("NICE: ", String.valueOf(emailUser));
+
+            emailText.setText(emailUser);
+
+        }else{
+            Log.d("LOGIN: ", "BUNDLE EMPTY");
+        }
+
         mAPIService = ApiUtils.getAPIService();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -130,8 +142,9 @@ public class LoginActivity extends AppCompatActivity {
 
                         } else {
                             Log.d("ERROR: ", "NULO");
+                            onLoginFailed();
                         }
-                        onLoginFailed();
+
                         progressDialog.dismiss();
                     }
                 }, 3000);

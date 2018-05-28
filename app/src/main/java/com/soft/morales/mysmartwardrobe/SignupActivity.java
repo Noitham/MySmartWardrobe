@@ -1,6 +1,7 @@
 package com.soft.morales.mysmartwardrobe;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -63,7 +64,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
-                finish();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -92,12 +94,6 @@ public class SignupActivity extends AppCompatActivity {
         // TODO: Implement your own signup logic here.
         createAccount(name, email, password, age);
 
-        TextView nameText = (TextView) findViewById(R.id.name);
-        nameText.setText(name);
-
-        TextView emailText = (TextView) findViewById(R.id.email);
-        emailText.setText(email);
-
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -112,9 +108,17 @@ public class SignupActivity extends AppCompatActivity {
 
 
     public void onSignupSuccess() {
+        Bundle bundle = new Bundle();
+
         signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
-        finish();
+
+        bundle.putString("email", emailText.getText().toString());
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
     }
 
     public void onSignupFailed() {

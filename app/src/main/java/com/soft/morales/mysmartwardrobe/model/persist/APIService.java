@@ -1,6 +1,7 @@
 package com.soft.morales.mysmartwardrobe.model.persist;
 
 import com.soft.morales.mysmartwardrobe.model.Garment;
+import com.soft.morales.mysmartwardrobe.model.User;
 
 import java.util.List;
 
@@ -33,6 +34,17 @@ public interface APIService {
             @Field("color") String color,
             @Field("size") String size,
             @Field("brand") String brand);
+
+    @POST("users/")
+    @FormUrlEncoded
+    Call<User> createAccount(
+            @Field("name") String name,
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("age") String age);
+
+    @GET("users/")
+    Call<List<User>> loginUser();
 
     @POST("brands/")
     @FormUrlEncoded

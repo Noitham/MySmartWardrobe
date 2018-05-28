@@ -13,34 +13,45 @@
         android:layout_height="220dp"
         android:src="@drawable/torso_hombre"
         android:layout_gravity="center"
-        android:layout_marginBottom="220dp"/>
+        android:layout_marginBottom="240dp" />
 
     <ImageView
         android:id="@+id/pantalones_hombres"
-        android:layout_width="160dp"
+        android:layout_width="240dp"
         android:layout_height="180dp"
         android:src="@drawable/pantalon_hombre"
         android:layout_gravity="center"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="140dp"/>
+        android:layout_marginTop="135dp"/>
 
     <ImageView
         android:id="@+id/pies_hombre"
-        android:layout_width="160dp"
+        android:layout_width="240dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
         android:layout_marginTop="360dp"
         android:src="@drawable/pies_hombre" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/deleteLook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_menu_delete"
+        app:borderWidth="0dp"
+        app:fabSize="normal" />
+
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/addGarment"
+        android:id="@+id/addLook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_24dp"
+        android:src="@drawable/ic_star_24dp"
         app:borderWidth="0dp"
         app:fabSize="normal" />
+
 
 </android.support.design.widget.CoordinatorLayout>

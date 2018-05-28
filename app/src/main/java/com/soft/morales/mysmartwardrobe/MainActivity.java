@@ -13,13 +13,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.soft.morales.mysmartwardrobe.fragments.CalendarFragment;
-import com.soft.morales.mysmartwardrobe.fragments.HomeFragment;
 import com.soft.morales.mysmartwardrobe.fragments.MyClosetFragment;
 import com.soft.morales.mysmartwardrobe.fragments.SettingsFragment;
 
@@ -29,9 +30,14 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Toolbar toolbar;
 
+    TextView nameDrawer, emailDrawer;
+
     FragmentManager fragmentManager;
     NavigationView navigationView;
     FrameLayout frameLayout;
+    String name;
+    String email;
+    int id;
     int value = 0;
 
     @Override
@@ -39,16 +45,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupView();
+
         if (getIntent().getExtras() != null) {
 
             value = getIntent().getExtras().getInt("ok");
+            id = getIntent().getExtras().getInt("id");
+            name = getIntent().getExtras().getString("name");
+            email = getIntent().getExtras().getString("email");
+            Log.d("NICE: ", "BUNDKE NOT EMPTY");
+            Log.d("NICE: ", String.valueOf(name));
 
+            nameDrawer.setText(name);
+            emailDrawer.setText(email);
 
+        }else{
+            Log.d("ERROR: ", "BUNDKE EMPTY");
         }
 
         fragmentManager = getSupportFragmentManager();
 
-        setupView();
+
 
         if (savedInstanceState == null) showHome();
 
@@ -81,6 +98,47 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        if (getIntent().getExtras() != null) {
+
+            id = getIntent().getExtras().getInt("id");
+            name = getIntent().getExtras().getString("name");
+            email = getIntent().getExtras().getString("email");
+
+            nameDrawer.setText(name);
+            emailDrawer.setText(email);
+            Log.d("NICE: ", "BUNDKE NOT EMPTY");
+
+        }else{
+            Log.d("ERROR: ", "BUNDKE EMPTY");
+        }
+
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+
+        if (this.getIntent().getExtras() != null) {
+            Log.d("NICE: ", "BUNDKE NOT EMPTY");
+
+            id = getIntent().getExtras().getInt("id");
+            name = getIntent().getExtras().getString("name");
+            email = getIntent().getExtras().getString("email");
+            Log.d("NICE: ", "BUNDKE NOT EMPTY");
+
+            nameDrawer.setText(name);
+            emailDrawer.setText(email);
+
+        }else{
+            Log.d("ERROR: ", "BUNDKE EMPTY");
+        }
+
+    }
+
     private void setupView() {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -93,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        View headerView = navigationView.getHeaderView(0);
+        nameDrawer = (TextView) headerView.findViewById(R.id.name);
+        emailDrawer = (TextView) headerView.findViewById(R.id.email);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -114,9 +175,6 @@ public class MainActivity extends AppCompatActivity {
         Class fragmentClass;
 
         switch (menuItem.getItemId()) {
-            case R.id.drawer_home:
-                fragmentClass = HomeFragment.class;
-                break;
             case R.id.drawer_gallery:
                 fragmentClass = MyClosetFragment.class;
                 specialToolbarBehaviour = true;
@@ -136,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent2);
                 return;
             default:
-                fragmentClass = HomeFragment.class;
+                fragmentClass = MyClosetFragment.class;
                 break;
         }
 
@@ -182,8 +240,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void gotoLogin(View view) {
-        Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(mainIntent);
-        //Comentario de prueba
+
+        if(nameDrawer.getText().equals("Unregistered user")){
+            Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(mainIntent);
+        }else{
+
+        }
     }
 }

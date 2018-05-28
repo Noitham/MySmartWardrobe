@@ -58,6 +58,16 @@
                 android:hint="Password"/>
         </android.support.design.widget.TextInputLayout>
 
+
+        <!-- Age Spinner-->
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/spinner_age"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            />
+
         <!-- Signup Button -->
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_signup"

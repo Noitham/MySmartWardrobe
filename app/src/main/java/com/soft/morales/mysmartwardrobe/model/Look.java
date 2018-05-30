@@ -28,7 +28,7 @@ public class Look {
         this.date = date;
     }
 
-    public List<Integer> getGarment_id() {
+    public List<Integer> getGarmentsIds() {
         return garment_id;
     }
 

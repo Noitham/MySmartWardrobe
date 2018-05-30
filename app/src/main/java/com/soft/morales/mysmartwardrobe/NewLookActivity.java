@@ -162,11 +162,11 @@ public class NewLookActivity extends AppCompatActivity {
                 type = bundle.getString("garmentType", "");
                 foto = bundle.getString("Foto", "");
 
-                if (type.equalsIgnoreCase("Torso")) {
+                if (type.equalsIgnoreCase("Shirt")) {
                     Glide.with(this).load(Uri.parse(foto)).into(imgTorso);
-                } else if (type.equalsIgnoreCase("Pantalones")) {
+                } else if (type.equalsIgnoreCase("Legs")) {
                     Glide.with(this).load(Uri.parse(foto)).into(imgLegs);
-                } else if (type.equalsIgnoreCase("Bambas")) {
+                } else if (type.equalsIgnoreCase("Feet")) {
                     Glide.with(this).load(Uri.parse(foto)).into(imgFeets);
                 }
 
@@ -270,9 +270,9 @@ public class NewLookActivity extends AppCompatActivity {
 
         Log.d("POST:", "ENTRA");
 
-        Bundle bundle = data.getExtras();
+        if (data != null && data.getExtras() != null) {
+            Bundle bundle = data.getExtras();
 
-        if (bundle != null) {
             Log.d("BUNDLE:", "ENTRA");
             type = bundle.getString("garmentType", "");
             foto = bundle.getString("Foto", "");

@@ -29,6 +29,8 @@ import com.soft.morales.mysmartwardrobe.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static int CARD_ACTION = 4005;
+
     ActionBarDrawerToggle drawerToggle;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -38,31 +40,25 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     NavigationView navigationView;
     FrameLayout frameLayout;
-    String name;
-    String email;
     String foto1;
     String foto2;
     String foto3;
     int id;
     int value = 0;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Gson gson = new Gson();
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        mUser = gson.fromJson(sharedPref.getString("user", ""), User.class);
+
         setupView();
 
-        SharedPreferences sp = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-
-        Gson gson = new Gson();
-        User user = gson.fromJson(sp.getString("user", ""), User.class);
-
-        nameDrawer.setText(user.getName());
-        emailDrawer.setText(user.getEmail());
-
         if (getIntent().getExtras() != null) {
-
             value = getIntent().getExtras().getInt("ok");
             id = getIntent().getExtras().getInt("id");
         } else {
@@ -70,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         fragmentManager = getSupportFragmentManager();
-
-
-        if (savedInstanceState == null) showHome();
 
         if (value == 1) {
             boolean specialToolbarBehaviour;
@@ -101,26 +94,33 @@ public class MainActivity extends AppCompatActivity {
 
             setToolbarElevation(specialToolbarBehaviour);
             setTitle("Gallery");
-            drawerLayout.closeDrawer(Gravity.START, false);
-
-            drawerLayout.closeDrawers();
-
+        } else {
+            nameDrawer.setText(mUser.getName());
+            emailDrawer.setText(mUser.getEmail());
+            if (savedInstanceState == null) showHome();
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
+        Gson gson = new Gson();
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        mUser = gson.fromJson(sharedPref.getString("user", ""), User.class);
+
         if (getIntent().getExtras() != null) {
 
-            id = getIntent().getExtras().getInt("id");
-            name = getIntent().getExtras().getString("name");
-            email = getIntent().getExtras().getString("email");
-
-            nameDrawer.setText(name);
-            emailDrawer.setText(email);
+            if (value == 0) {
+                nameDrawer.setText(mUser.getName());
+                emailDrawer.setText(mUser.getEmail());
+            }
             Log.d("NICE: ", "BUNDKE NOT EMPTY");
 
         } else {
@@ -137,12 +137,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d("NICE: ", "BUNDKE NOT EMPTY");
 
             id = getIntent().getExtras().getInt("id");
-            name = getIntent().getExtras().getString("name");
-            email = getIntent().getExtras().getString("email");
             Log.d("NICE: ", "BUNDKE NOT EMPTY");
 
-            nameDrawer.setText(name);
-            emailDrawer.setText(email);
+            if (value == 0) {
+                nameDrawer.setText(mUser.getName());
+                emailDrawer.setText(mUser.getEmail());
+            }
 
         } else {
             Log.d("ERROR: ", "BUNDKE EMPTY");
@@ -157,23 +157,34 @@ public class MainActivity extends AppCompatActivity {
 
         frameLayout = (FrameLayout) findViewById(R.id.content_frame);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawerLayout.addDrawerListener(drawerToggle);
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            value = getIntent().getExtras().getInt("ok");
+        }
 
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        if (value == 0) {
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+            drawerLayout.addDrawerListener(drawerToggle);
 
-        View headerView = navigationView.getHeaderView(0);
+            navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        nameDrawer = (TextView) headerView.findViewById(R.id.name);
-        emailDrawer = (TextView) headerView.findViewById(R.id.email);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                selectDrawerItem(menuItem);
-                return true;
-            }
-        });
+            View headerView = navigationView.getHeaderView(0);
+
+            nameDrawer = (TextView) headerView.findViewById(R.id.name);
+            emailDrawer = (TextView) headerView.findViewById(R.id.email);
+            navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(MenuItem menuItem) {
+                    selectDrawerItem(menuItem);
+                    return true;
+                }
+            });
+        } else {
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
 
     }
 
@@ -239,12 +250,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (value == 1) {
+            return false;
+        }
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
-        drawerToggle.syncState();
+        if (value == 0) {
+            drawerToggle.syncState();
+        }
         super.onPostCreate(savedInstanceState);
     }
 
@@ -254,11 +270,4 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
-    public void gotoLogin(View view) {
-
-        if (nameDrawer.getText().equals("Unregistered user")) {
-            Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(mainIntent);
-        }
-    }
 }

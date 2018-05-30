@@ -2,6 +2,7 @@ package com.soft.morales.mysmartwardrobe;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class CardActivity extends AppCompatActivity {
     ImageView imageView;
     Button deleteButton;
 
+    int pos;
     String garmentId;
 
     private APIService mAPIService;
@@ -52,6 +54,7 @@ public class CardActivity extends AppCompatActivity {
         String URI = mbundle.getString("Foto");
 
         garmentId = mbundle.getString("ID");
+        pos = mbundle.getInt("pos");
 
         txtName.setText("Nombre: " + mbundle.getString("Nombre"));
         txtCategory.setText("Categoría: " + mbundle.getString("Categoria"));
@@ -75,7 +78,7 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
-    public void deleteGarment(){
+    public void deleteGarment() {
 
         mAPIService = ApiUtils.getAPIService();
 
@@ -86,6 +89,13 @@ public class CardActivity extends AppCompatActivity {
             public void onResponse(Call<Garment> call, Response<Garment> response) {
                 Toast.makeText(getApplicationContext(), "DELETED CORRECTLY", Toast.LENGTH_LONG).show();
 
+                Bundle b = new Bundle();
+                Intent i = new Intent();
+
+                b.putInt("pos", pos);
+                i.putExtras(b);
+
+                setResult(RESULT_OK, i);
                 finish();
 
             }
@@ -98,8 +108,7 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
-    private AlertDialog AskOption()
-    {
+    private AlertDialog AskOption() {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Delete")

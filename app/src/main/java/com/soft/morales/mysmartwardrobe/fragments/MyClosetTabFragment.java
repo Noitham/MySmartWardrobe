@@ -1,7 +1,6 @@
 package com.soft.morales.mysmartwardrobe.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,12 +33,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.app.Activity.RESULT_OK;
+import static com.soft.morales.mysmartwardrobe.MainActivity.CARD_ACTION;
+
 @SuppressLint("ValidFragment")
 public class MyClosetTabFragment extends Fragment {
 
     private APIService mAPIService;
     private int mPosition;
     private ListView listView;
+    private int lastItemClicked = 0;
 
     int value;
 
@@ -49,6 +52,7 @@ public class MyClosetTabFragment extends Fragment {
 
     List<Garment> myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
     private User mUser;
+    private CustomAdapter mAdapter;
 
     public MyClosetTabFragment(int position) {
         mPosition = position;
@@ -126,11 +130,13 @@ public class MyClosetTabFragment extends Fragment {
 
             }
 
-            listView = (ListView) getView().findViewById(R.id.listview);
+            if (getView() != null) {
+                listView = (ListView) getView().findViewById(R.id.listview);
 
-            CustomAdapter adapter = new CustomAdapter(getContext(), rowItems);
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener(listener);
+                mAdapter = new CustomAdapter(getContext(), rowItems);
+                listView.setAdapter(mAdapter);
+                listView.setOnItemClickListener(listener);
+            }
 
         }
     }
@@ -139,6 +145,7 @@ public class MyClosetTabFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+            lastItemClicked = position;
 
             switch (mPosition) {
                 case 1:
@@ -190,15 +197,17 @@ public class MyClosetTabFragment extends Fragment {
 
             intent.putExtras(bundle);
             if (getActivity() != null) {
-                getActivity().setResult(Activity.RESULT_OK, intent);
+                getActivity().setResult(RESULT_OK, intent);
                 getActivity().finish();
             }
 
 
         } else {
             Intent intent = new Intent(getActivity(), CardActivity.class);
+
             Bundle bundle = new Bundle();
             bundle.putString("ID", garment.getId());
+            bundle.putInt("pos", lastItemClicked);
             bundle.putString("Nombre", garment.getName());
             bundle.putString("Foto", garment.getPhoto());
             bundle.putString("Categoria", garment.getCategory());
@@ -208,9 +217,12 @@ public class MyClosetTabFragment extends Fragment {
             bundle.putString("Talla", garment.getSize());
             bundle.putString("Marca", garment.getBrand());
             intent.putExtras(bundle);
-            startActivity(intent);
+            startActivityForResult(intent, CARD_ACTION);
         }
+
+
     }
+
 
     public void getAllShirts() {
 
@@ -237,6 +249,16 @@ public class MyClosetTabFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CARD_ACTION && resultCode == RESULT_OK) {
+            int pos = data.getExtras().getInt("pos");
+
+            mAdapter.removeItem(pos);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     public void getAllJackets() {

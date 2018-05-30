@@ -1,7 +1,6 @@
 package com.soft.morales.mysmartwardrobe;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,14 +9,11 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -71,6 +67,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
     private ImageView imgPreview; // img preview
 
+    private boolean isUploading = false;
 
     private Button buttonSend;
     private EditText textName, textBrand, textPrice, textColor;
@@ -116,32 +113,13 @@ public class NewGarmentActivity extends AppCompatActivity {
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                String name = textName.getText().toString().trim();
-                String photo = fileUri.toString();
-                String category = spinnerCategory.getSelectedItem().toString();
-                String season = spinnerSeason.getSelectedItem().toString();
-                String price = textPrice.getText().toString().trim();
-                String color = textColor.getText().toString().trim();
-                String size = spinnerSize.getSelectedItem().toString();
-                String brand = textBrand.getText().toString().trim();
-
-                new CountDownTimer(5000, 1000) {
-
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        createBrand(brand);
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        sendPost(name, photo, category, season, price, color, size, brand);
-
-                        finish();
-                    }
-
-                }.start();
-
+                if (validate() && !isUploading) {
+                    isUploading = true;
+                    String brand = textBrand.getText().toString().trim();
+                    createBrand(brand);
+                } else {
+                    isUploading = false;
+                }
             }
         });
 
@@ -154,13 +132,31 @@ public class NewGarmentActivity extends AppCompatActivity {
             public void onResponse(Call<Garment> call, Response<Garment> response) {
 
                 if (response.isSuccessful()) {
-                    Log.d("OK: ", "post submitted to API." + response.body().toString());
+                    String name = textName.getText().toString().trim();
+                    String photo = fileUri.toString();
+                    String category = spinnerCategory.getSelectedItem().toString();
+                    String season = spinnerSeason.getSelectedItem().toString();
+                    String price = textPrice.getText().toString().trim();
+                    String color = textColor.getText().toString().trim();
+                    String size = spinnerSize.getSelectedItem().toString();
+                    String brand = textBrand.getText().toString().trim();
+
+                    sendPost(name, photo, category, season, price, color, size, brand);
                 }
             }
 
             @Override
             public void onFailure(Call<Garment> call, Throwable t) {
-                Log.d("NOOK: ", "Unable to submit post to API.");
+                String name = textName.getText().toString().trim();
+                String photo = fileUri.toString();
+                String category = spinnerCategory.getSelectedItem().toString();
+                String season = spinnerSeason.getSelectedItem().toString();
+                String price = textPrice.getText().toString().trim();
+                String color = textColor.getText().toString().trim();
+                String size = spinnerSize.getSelectedItem().toString();
+                String brand = textBrand.getText().toString().trim();
+
+                sendPost(name, photo, category, season, price, color, size, brand);
             }
         });
 
@@ -178,13 +174,14 @@ public class NewGarmentActivity extends AppCompatActivity {
             public void onResponse(Call<Garment> call, Response<Garment> response) {
 
                 if (response.isSuccessful()) {
-                    Log.d("OK: ", "post submitted to API." + response.body().toString());
+                    finish();
                 }
             }
 
             @Override
             public void onFailure(Call<Garment> call, Throwable t) {
                 Log.d("NOOK: ", "Unable to submit post to API.");
+                isUploading = false;
             }
         });
 
@@ -566,23 +563,17 @@ public class NewGarmentActivity extends AppCompatActivity {
 
     /**
      * private EditText textName, textBrand, textPrice, textColor;
-     private Spinner spinnerCategory, spinnerSeason, spinnerSize;
+     * private Spinner spinnerCategory, spinnerSeason, spinnerSize;
+     *
      * @return
      */
-
-    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
     public boolean validate() {
         boolean valid = true;
 
         String name = textName.getText().toString();
-        String brand= textBrand.getText().toString();
+        String brand = textBrand.getText().toString();
         String price = textPrice.getText().toString();
         String color = textColor.getText().toString();
-        String category = spinnerCategory.getSelectedItem().toString();
-        String season = spinnerSeason.getSelectedItem().toString();
-        String size = spinnerSize.getSelectedItem().toString();
-
 
         if (name.isEmpty()) {
             textName.setError("enter a valid name");
@@ -607,6 +598,11 @@ public class NewGarmentActivity extends AppCompatActivity {
             valid = false;
         } else {
             textColor.setError(null);
+        }
+
+        if (fileUri == null) {
+            Toast.makeText(this, "Take a photo", Toast.LENGTH_SHORT).show();
+            valid = false;
         }
 
         return valid;

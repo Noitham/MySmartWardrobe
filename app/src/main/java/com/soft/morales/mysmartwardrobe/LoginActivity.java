@@ -130,22 +130,23 @@ public class LoginActivity extends AppCompatActivity {
                             for (int i = 0; i < myUsers.size(); i++) {
 
                                 if (email.equalsIgnoreCase(emails.get(i).toString()) && password.equalsIgnoreCase(passwords.get(i).toString())) {
-
-                                    user = myUsers.get(i);
-
-                                    onLoginSuccess();
-
                                     check = true;
 
-                                } else {
+                                    user = myUsers.get(i);
+                                    onLoginSuccess();
 
-                                    onLoginFailed();
+                                    break;
                                 }
+                            }
+
+                            if (!check) {
+                                onLoginFailed();
                             }
                         }
                         progressDialog.dismiss();
                     }
                 }, 3000);
+
 
     }
 
@@ -160,8 +161,6 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
 
                 List<User> users = response.body();
-
-                Log.d("ANSWER: ", users.get(0).getEmail().toString());
 
                 myUsers = new ArrayList<>();
 

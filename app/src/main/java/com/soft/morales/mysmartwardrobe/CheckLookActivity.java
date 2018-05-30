@@ -27,6 +27,8 @@ import retrofit2.Response;
 
 public class CheckLookActivity extends AppCompatActivity {
 
+    public static final int CHECK_RESULT_ACTIVITY = 4001;
+
     private APIService mAPIService;
     SharedPreferences sharedPref;
     Gson gson;
@@ -98,82 +100,86 @@ public class CheckLookActivity extends AppCompatActivity {
 
                 looks = response.body();
 
-                look = looks.get(0);
+                if (looks.size() > 0 && looks.get(0).getGarmentsIds().size() == 3) {
+                    look = looks.get(0);
 
-                Call<Garment> call1 = mAPIService.getGarment(look.getGarment_id().get(0));
-                Call<Garment> call2 = mAPIService.getGarment(look.getGarment_id().get(1));
-                Call<Garment> call3 = mAPIService.getGarment(look.getGarment_id().get(2));
+                    Call<Garment> call1 = mAPIService.getGarment(look.getGarmentsIds().get(0));
+                    Call<Garment> call2 = mAPIService.getGarment(look.getGarmentsIds().get(1));
+                    Call<Garment> call3 = mAPIService.getGarment(look.getGarmentsIds().get(2));
 
-                query1.put("id", look.getGarment_id().get(0));
-                query2.put("id", look.getGarment_id().get(1));
-                query3.put("id", look.getGarment_id().get(2));
+                    query1.put("id", look.getGarmentsIds().get(0));
+                    query2.put("id", look.getGarmentsIds().get(1));
+                    query3.put("id", look.getGarmentsIds().get(2));
 
-                call1.enqueue(new Callback<Garment>() {
-                    @Override
-                    public void onResponse(Call<Garment> call, Response<Garment> response) {
+                    call1.enqueue(new Callback<Garment>() {
+                        @Override
+                        public void onResponse(Call<Garment> call, Response<Garment> response) {
 
-                        Torso = response.body();
+                            Torso = response.body();
 
-                        if (Torso != null) {
-                            Glide.with(getApplication()).load(Uri.parse(String.valueOf(Torso.getPhoto()))).into(imgTorso);
+                            if (Torso != null) {
+                                Glide.with(getApplication()).load(Uri.parse(String.valueOf(Torso.getPhoto()))).into(imgTorso);
 
-                            Log.d("photo1", String.valueOf(Torso.getPhoto()));
-                        } else {
-                            Toast.makeText(getApplication(), "There's no look for the current day", Toast.LENGTH_LONG).show();
+                                Log.d("photo1", String.valueOf(Torso.getPhoto()));
+                            } else {
+                                Toast.makeText(getApplication(), "There's no look for the current day", Toast.LENGTH_LONG).show();
+                            }
+
                         }
 
-                    }
+                        @Override
+                        public void onFailure(Call<Garment> call, Throwable t) {
+                            Toast.makeText(getApplication(), t.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
 
-                    @Override
-                    public void onFailure(Call<Garment> call, Throwable t) {
-                        Toast.makeText(getApplication(), t.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
+                    call2.enqueue(new Callback<Garment>() {
+                        @Override
+                        public void onResponse(Call<Garment> call, Response<Garment> response) {
 
-                call2.enqueue(new Callback<Garment>() {
-                    @Override
-                    public void onResponse(Call<Garment> call, Response<Garment> response) {
+                            Piernas = response.body();
 
-                        Piernas = response.body();
+                            if (Piernas != null) {
+                                Glide.with(getApplication()).load(Uri.parse(String.valueOf(Piernas.getPhoto()))).into(imgLegs);
 
-                        if (Piernas != null) {
-                            Glide.with(getApplication()).load(Uri.parse(String.valueOf(Piernas.getPhoto()))).into(imgLegs);
+                                Log.d("photo2", String.valueOf(Piernas.getPhoto()));
+                            } else {
+                                Toast.makeText(getApplication(), "There's no look for the current day", Toast.LENGTH_LONG).show();
+                            }
 
-                            Log.d("photo2", String.valueOf(Piernas.getPhoto()));
-                        } else {
-                            Toast.makeText(getApplication(), "There's no look for the current day", Toast.LENGTH_LONG).show();
                         }
 
-                    }
-
-                    @Override
-                    public void onFailure(Call<Garment> call, Throwable t) {
-                        Toast.makeText(getApplication(), t.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-
-
-                call3.enqueue(new Callback<Garment>() {
-                    @Override
-                    public void onResponse(Call<Garment> call, Response<Garment> response) {
-
-                        Pies = response.body();
-
-                        if (Pies != null) {
-                            Glide.with(getApplication()).load(Uri.parse(String.valueOf(Pies.getPhoto()))).into(imgFeets);
-
-                            Log.d("photo3", String.valueOf(Pies.getPhoto()));
-                        } else {
-                            Toast.makeText(getApplication(), "There's no look for the current day", Toast.LENGTH_LONG).show();
+                        @Override
+                        public void onFailure(Call<Garment> call, Throwable t) {
+                            Toast.makeText(getApplication(), t.getMessage(), Toast.LENGTH_LONG).show();
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onFailure(Call<Garment> call, Throwable t) {
-                        Toast.makeText(getApplication(), t.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
 
+                    call3.enqueue(new Callback<Garment>() {
+                        @Override
+                        public void onResponse(Call<Garment> call, Response<Garment> response) {
+
+                            Pies = response.body();
+
+                            if (Pies != null) {
+                                Glide.with(getApplication()).load(Uri.parse(String.valueOf(Pies.getPhoto()))).into(imgFeets);
+
+                                Log.d("photo3", String.valueOf(Pies.getPhoto()));
+                            } else {
+                                Toast.makeText(getApplication(), "There's no look for the current day", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Garment> call, Throwable t) {
+                            Toast.makeText(getApplication(), t.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    setResult(RESULT_CANCELED);
+                    finish();
+                }
 
             }
 

@@ -97,4 +97,7 @@ public class CustomAdapter extends BaseAdapter {
         return convertView;
     }
 
+    public void removeItem(int pos) {
+        rowItems.remove(pos);
+    }
 }

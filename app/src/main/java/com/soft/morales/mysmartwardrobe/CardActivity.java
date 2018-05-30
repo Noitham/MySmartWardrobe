@@ -61,7 +61,6 @@ public class CardActivity extends AppCompatActivity {
         txtSize.setText("Talla: " + mbundle.getString("Talla"));
         txtBrand.setText("Marca: " + mbundle.getString("Marca"));
 
-
         Uri myUri = Uri.parse(URI);
 
         Glide.with(this).load(myUri).into(imageView);
@@ -96,7 +95,6 @@ public class CardActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
-
 
     }
 

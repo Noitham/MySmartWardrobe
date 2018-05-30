@@ -7,10 +7,10 @@ public class Brand {
 
     @SerializedName("id")
     @Expose
-    public String id;
+    private String id;
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
 
     public Brand(String id, String name) {
         this.id = id;

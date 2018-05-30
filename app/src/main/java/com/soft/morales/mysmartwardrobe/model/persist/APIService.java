@@ -1,6 +1,7 @@
 package com.soft.morales.mysmartwardrobe.model.persist;
 
 import com.soft.morales.mysmartwardrobe.model.Garment;
+import com.soft.morales.mysmartwardrobe.model.Look;
 import com.soft.morales.mysmartwardrobe.model.User;
 
 import java.util.List;
@@ -20,13 +21,16 @@ public interface APIService {
     // Request method and URL specified in the annotation
 
     @GET("garments/")
-    Call<List<Garment>> getGarment();
-
-    @GET("garments/")
     Call<List<Garment>> getGarment(@QueryMap Map<String, String> options);
+
+
+    @GET("garments/{id}/")
+    Call<Garment> getGarment(@Path("id") Integer id);
+
 
     @DELETE("garments/{id}/")
     Call<Garment> deleteGarment(@Path("id") String id);
+
 
     @POST("garments/")
     @FormUrlEncoded
@@ -41,6 +45,7 @@ public interface APIService {
             @Field("size") String size,
             @Field("brand") String brand);
 
+
     @POST("users/")
     @FormUrlEncoded
     Call<User> createAccount(
@@ -49,13 +54,26 @@ public interface APIService {
             @Field("password") String password,
             @Field("age") String age);
 
+
     @GET("users/")
     Call<List<User>> loginUser();
+
 
     @POST("brands/")
     @FormUrlEncoded
     Call<Garment> createBrand(
             @Field("name") String name);
 
+
+    @POST("looks/")
+    @FormUrlEncoded
+    Call<Look> sendLook(
+            @Field("garment_id") List<Integer> garment_id,
+            @Field("username") String username,
+            @Field("date") String date);
+
+
+    @GET("looks/")
+    Call<List<Look>> getLooks(@QueryMap Map<String, String> options);
 
 }

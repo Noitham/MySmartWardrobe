@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     User user;
     String emailUser = null;
 
+    boolean check = false;
 
     private APIService mAPIService;
 
@@ -66,8 +67,6 @@ public class LoginActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null) {
 
             emailUser = getIntent().getExtras().getString("email");
-            Log.d("NICE: ", "BUNDKE NOT EMPTY");
-            Log.d("NICE: ", String.valueOf(emailUser));
 
             emailText.setText(emailUser);
 
@@ -103,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "Login");
 
         if (!validate()) {
+            loginButton.setEnabled(true);
             onLoginFailed();
             return;
         }
@@ -131,23 +131,22 @@ public class LoginActivity extends AppCompatActivity {
 
                                 if (email.equalsIgnoreCase(emails.get(i).toString()) && password.equalsIgnoreCase(passwords.get(i).toString())) {
 
-                                    Log.d("LOGIN: ", "OK");
                                     user = myUsers.get(i);
+
                                     onLoginSuccess();
 
+                                    check = true;
+
                                 } else {
-                                    Log.d("LOGIN: ", "NO OK");
+
+                                    onLoginFailed();
                                 }
                             }
-
-                        } else {
-                            Log.d("ERROR: ", "NULO");
-                            onLoginFailed();
                         }
-
                         progressDialog.dismiss();
                     }
                 }, 3000);
+
     }
 
     public void getAllUsers() {
@@ -200,8 +199,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 startActivity(intent2);
                 finish();
+            } else {
+                loginButton.setEnabled(true);
             }
         }
+
     }
 
     @Override
@@ -221,14 +223,17 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent intent2 = new Intent(this, MainActivity.class);
 
+        check = true;
+
         startActivity(intent2);
         finish();
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
+        Toast.makeText(getApplicationContext(), "login failed", Toast.LENGTH_LONG).show();
         loginButton.setEnabled(true);
+
     }
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)

@@ -7,31 +7,31 @@ public class Garment {
 
     @SerializedName("id")
     @Expose
-    public String id;
+    private String id;
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
     @SerializedName("photo")
     @Expose
-    public String photo;
+    private String photo;
     @SerializedName("category")
     @Expose
-    public String category;
+    private String category;
     @SerializedName("season")
     @Expose
-    public String season;
+    private String season;
     @SerializedName("price")
     @Expose
-    public String price;
+    private String price;
     @SerializedName("color")
     @Expose
-    public String color;
+    private String color;
     @SerializedName("size")
     @Expose
-    public String size;
+    private String size;
     @SerializedName("brand")
     @Expose
-    public String brand;
+    private String brand;
 
     public Garment(Garment garment) {
         this.id = garment.id;

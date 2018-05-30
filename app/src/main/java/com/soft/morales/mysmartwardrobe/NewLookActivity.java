@@ -2,15 +2,15 @@ package com.soft.morales.mysmartwardrobe;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +18,21 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.soft.morales.mysmartwardrobe.model.Look;
+import com.soft.morales.mysmartwardrobe.model.User;
+import com.soft.morales.mysmartwardrobe.model.persist.APIService;
+import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NewLookActivity extends AppCompatActivity {
 
@@ -27,17 +42,18 @@ public class NewLookActivity extends AppCompatActivity {
 
     Intent intent2;
 
+    Intent intent3;
+
     String myString = null;
 
-    android.support.design.widget.FloatingActionButton buttonFavourite, butonDelete;
+    android.support.design.widget.FloatingActionButton buttonCreateLook, butonDelete;
 
     private String foto;
+    private String idShirt, idLegs, idFeet;
 
-    String foto1;
-    String foto2;
-    String foto3;
+    private String type;
 
-    private String part;
+    private APIService mAPIService;
 
 
     @SuppressLint("WrongViewCast")
@@ -45,6 +61,10 @@ public class NewLookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_new_look);
+
+        setupToolbar();
+
+        mAPIService = ApiUtils.getAPIService();
 
         SharedPreferences preferences = getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -55,7 +75,7 @@ public class NewLookActivity extends AppCompatActivity {
         imgFeets = (ImageView) findViewById(R.id.pies_hombre);
 
         butonDelete = (android.support.design.widget.FloatingActionButton) findViewById(R.id.deleteLook);
-        buttonFavourite = (android.support.design.widget.FloatingActionButton) findViewById(R.id.addLook);
+        buttonCreateLook = (android.support.design.widget.FloatingActionButton) findViewById(R.id.addLook);
 
 
         imgTorso.setOnClickListener(new FloatingActionButton.OnClickListener() {
@@ -80,10 +100,10 @@ public class NewLookActivity extends AppCompatActivity {
             }
         });
 
-        buttonFavourite.setOnClickListener(new Button.OnClickListener() {
+        buttonCreateLook.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
 
-                AlertDialog diaBox = askAddFavourite();
+                AlertDialog diaBox = askCreateLook();
                 diaBox.show();
             }
         });
@@ -136,17 +156,17 @@ public class NewLookActivity extends AppCompatActivity {
         if (requestCode == FOTO_REQUEST && resultCode == RESULT_OK) {
             Bundle bundle = data.getExtras();
 
+            intent3 = data;
+
             if (bundle != null) {
-                part = bundle.getString("Part", "");
+                type = bundle.getString("garmentType", "");
                 foto = bundle.getString("Foto", "");
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-
-                if (part.equalsIgnoreCase("Camiseta")) {
+                if (type.equalsIgnoreCase("Torso")) {
                     Glide.with(this).load(Uri.parse(foto)).into(imgTorso);
-                } else if (part.equalsIgnoreCase("Pantalones")) {
+                } else if (type.equalsIgnoreCase("Pantalones")) {
                     Glide.with(this).load(Uri.parse(foto)).into(imgLegs);
-                } else if (part.equalsIgnoreCase("Bambas")) {
+                } else if (type.equalsIgnoreCase("Bambas")) {
                     Glide.with(this).load(Uri.parse(foto)).into(imgFeets);
                 }
 
@@ -178,27 +198,17 @@ public class NewLookActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-/*
-        lookPrueba.setTorso(myTorso);
-        lookPrueba.setLegs(myLegs);
-        lookPrueba.setFeets(myFeets);
-*/
-
-    }
-
-    private AlertDialog askAddFavourite() {
+    private AlertDialog askCreateLook() {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Confirm")
-                .setMessage("Do you want to save this look?")
+                .setMessage("Do you want to save this look to current day?")
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
-                        dialog.dismiss();
+
+                        createLookPost(intent3);
+
                     }
 
                 })
@@ -217,14 +227,17 @@ public class NewLookActivity extends AppCompatActivity {
     }
 
     private AlertDialog askDelete() {
+
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Confirm")
-                .setMessage("Are you sure you want to delete?")
+                .setMessage("Are you sure you want to delete the current look?")
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
+                        Glide.with(getApplication()).load(R.drawable.torso_hombre).into(imgTorso);
+                        Glide.with(getApplication()).load(R.drawable.pantalon_hombre).into(imgLegs);
+                        Glide.with(getApplication()).load(R.drawable.pies_hombre).into(imgFeets);
                         dialog.dismiss();
                     }
 
@@ -240,6 +253,90 @@ public class NewLookActivity extends AppCompatActivity {
                 .create();
 
         return myQuittingDialogBox;
+
+    }
+
+    private void setupToolbar() {
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    public void createLookPost(Intent data) {
+
+        Log.d("POST:", "ENTRA");
+
+        Bundle bundle = data.getExtras();
+
+        if (bundle != null) {
+            Log.d("BUNDLE:", "ENTRA");
+            type = bundle.getString("garmentType", "");
+            foto = bundle.getString("Foto", "");
+
+            SharedPreferences shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+            idShirt = shared.getString("idShirt", "");
+            idLegs = shared.getString("idLegs", "");
+            idFeet = shared.getString("idFeet", "");
+
+            List<Integer> myGarments = new ArrayList<>();
+
+            if (type.equalsIgnoreCase("Camiseta")) {
+                Glide.with(this).load(Uri.parse(foto)).into(imgTorso);
+            } else if (type.equalsIgnoreCase("Legs")) {
+                Glide.with(this).load(Uri.parse(foto)).into(imgLegs);
+            } else if (type.equalsIgnoreCase("Feet")) {
+                Glide.with(this).load(Uri.parse(foto)).into(imgFeets);
+            }
+
+            myGarments.add(Integer.parseInt(idShirt));
+            myGarments.add(Integer.parseInt(idLegs));
+            myGarments.add(Integer.parseInt(idFeet));
+
+            Log.d("SIZE: ", String.valueOf(myGarments.size()));
+
+            if (myGarments.size() == 3) {
+
+                Gson gson = new Gson();
+                shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                User user = gson.fromJson(shared.getString("user", ""), User.class);
+
+                Date c = Calendar.getInstance().getTime();
+                System.out.println("Current time => " + c);
+                Log.d("Current time => ", String.valueOf(c));
+
+                SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+                String formattedDate = df.format(c);
+
+                Log.d("Current time => ", String.valueOf(formattedDate));
+
+                mAPIService.sendLook(myGarments, user.getEmail(), formattedDate).enqueue(new Callback<Look>() {
+                    @Override
+                    public void onResponse(Call<Look> call, Response<Look> response) {
+
+                        if (response.isSuccessful()) {
+                            Log.d("OK: ", "post submitted to API." + response.body().toString());
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Look> call, Throwable t) {
+                        Log.d("NOOK: ", "Unable to submit post to API.");
+                    }
+                });
+
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Bundle vacío", Toast.LENGTH_SHORT)
+                        .show();
+                Log.d("POST:", "VACÍO");
+            }
+
+        }
 
     }
 

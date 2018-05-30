@@ -20,19 +20,14 @@
             android:icon="@drawable/ic_menu_calendar"
             android:title="Calendar" />
 
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Settings" />
-
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Account">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Invite your friends" />
+                android:id="@+id/nav_disconnect"
+                android:icon="@drawable/ic_menu_disconnect"
+                android:title="Disconnect" />
         </menu>
     </item>
 

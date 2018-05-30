@@ -7,19 +7,19 @@ public class User {
 
     @SerializedName("id")
     @Expose
-    public String id;
+    private String id;
     @SerializedName("name")
     @Expose
-    public String name;
+    private String name;
     @SerializedName("email")
     @Expose
-    public String email;
+    private String email;
     @SerializedName("password")
     @Expose
-    public String password;
+    private String password;
     @SerializedName("age")
     @Expose
-    public String age;
+    private String age;
 
     public User(User User) {
         this.id = User.id;

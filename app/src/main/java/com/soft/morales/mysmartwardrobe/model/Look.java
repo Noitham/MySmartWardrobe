@@ -3,49 +3,52 @@ package com.soft.morales.mysmartwardrobe.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Look {
 
-    @SerializedName("torso")
+
+    @SerializedName("garment_id")
     @Expose
-    public String torso;
-    @SerializedName("legs")
+    private List<Integer> garment_id;
+    @SerializedName("username")
     @Expose
-    public String legs;
-    @SerializedName("feets")
+    private String username;
+    @SerializedName("date")
     @Expose
-    public String feets;
+    private String date;
 
     public Look() {
 
     }
 
-    public Look(String torso, String legs, String feets) {
-        this.torso = torso;
-        this.legs = legs;
-        this.feets = feets;
+    public Look(List<Integer> garment_id, String username, String date) {
+        this.garment_id = garment_id;
+        this.username = username;
+        this.date = date;
     }
 
-    public String getTorso() {
-        return torso;
+    public List<Integer> getGarment_id() {
+        return garment_id;
     }
 
-    public void setTorso(String torso) {
-        this.torso = torso;
+    public void setGarment_id(List<Integer> garment_id) {
+        this.garment_id = garment_id;
     }
 
-    public String getLegs() {
-        return legs;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLegs(String legs) {
-        this.legs = legs;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getFeets() {
-        return feets;
+    public String getDate() {
+        return date;
     }
 
-    public void setFeets(String feets) {
-        this.feets = feets;
+    public void setDate(String date) {
+        this.date = date;
     }
 }

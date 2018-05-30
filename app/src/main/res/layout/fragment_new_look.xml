@@ -7,6 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".NewLookActivity">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ToolBarStyle">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/ToolBarStyle"/>
+
+    </android.support.design.widget.AppBarLayout>
+
 
     <ImageView
         android:id="@+id/torso_hombre"
@@ -30,7 +46,7 @@
         android:layout_width="240dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
-        android:layout_marginTop="360dp"
+        android:layout_marginTop="400dp"
         android:src="@drawable/pies_hombre" />
 
     <android.support.design.widget.FloatingActionButton

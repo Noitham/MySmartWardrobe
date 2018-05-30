@@ -25,7 +25,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.soft.morales.mysmartwardrobe.fragments.CalendarFragment;
 import com.soft.morales.mysmartwardrobe.fragments.MyClosetFragment;
-import com.soft.morales.mysmartwardrobe.fragments.SettingsFragment;
 import com.soft.morales.mysmartwardrobe.model.User;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,8 +58,8 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         User user = gson.fromJson(sp.getString("user", ""), User.class);
 
-        nameDrawer.setText(user.name);
-        emailDrawer.setText(user.email);
+        nameDrawer.setText(user.getName());
+        emailDrawer.setText(user.getEmail());
 
         if (getIntent().getExtras() != null) {
 
@@ -85,19 +84,6 @@ public class MainActivity extends AppCompatActivity {
             bundle.putString("foto2", foto2);
             bundle.putString("foto3", foto3);
 
-            if (foto1 != null) {
-                Log.d("Happy", "Happy");
-            } else {
-                Log.d("SOC EN BOBOBO", "    .");
-            }
-
-
-            if (foto2 != null) {
-                Log.d("Happy", "Happy");
-            } else {
-                Log.d("SOC EN BOBOBO", "    .");
-            }
-
             specialToolbarBehaviour = true;
 
             Fragment fragment = null;
@@ -116,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
             setToolbarElevation(specialToolbarBehaviour);
             setTitle("Gallery");
             drawerLayout.closeDrawer(Gravity.START, false);
+
+            drawerLayout.closeDrawers();
 
         }
 
@@ -174,7 +162,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(drawerToggle);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
         View headerView = navigationView.getHeaderView(0);
+
         nameDrawer = (TextView) headerView.findViewById(R.id.name);
         emailDrawer = (TextView) headerView.findViewById(R.id.email);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -209,12 +199,15 @@ public class MainActivity extends AppCompatActivity {
             case R.id.drawer_calendar:
                 fragmentClass = CalendarFragment.class;
                 break;
-            case R.id.nav_manage:
-                fragmentClass = SettingsFragment.class;
-                break;
             case R.id.add_new_look:
                 Intent intent2 = new Intent(this, NewLookActivity.class);
                 startActivity(intent2);
+                return;
+            case R.id.nav_disconnect:
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().remove("user").apply();
+                Intent intent3 = new Intent(this, LoginActivity.class);
+                startActivity(intent3);
                 return;
             default:
                 fragmentClass = MyClosetFragment.class;
@@ -266,8 +259,6 @@ public class MainActivity extends AppCompatActivity {
         if (nameDrawer.getText().equals("Unregistered user")) {
             Intent mainIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(mainIntent);
-        } else {
-
         }
     }
 }

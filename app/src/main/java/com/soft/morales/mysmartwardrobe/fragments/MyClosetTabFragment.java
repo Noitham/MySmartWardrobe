@@ -38,9 +38,7 @@ import retrofit2.Response;
 public class MyClosetTabFragment extends Fragment {
 
     private APIService mAPIService;
-
     private int mPosition;
-
     private ListView listView;
 
     int value;
@@ -49,18 +47,12 @@ public class MyClosetTabFragment extends Fragment {
     String foto2;
     String foto3;
 
-    List<Garment> myGarments, myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
+    List<Garment> myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
     private User mUser;
 
     public MyClosetTabFragment(int position) {
         mPosition = position;
     }
-
-    public MyClosetTabFragment(int position, int mode) {
-        mPosition = position;
-        value = mode;
-    }
-
 
     public MyClosetTabFragment(int position, int mode, String foto1, String foto2, String foto3) {
         mPosition = position;
@@ -68,28 +60,14 @@ public class MyClosetTabFragment extends Fragment {
 
         if (foto1 != null) {
             this.foto1 = foto1;
-            Log.d("Happy", "Happy");
-
-        } else {
-            Log.d("NONONO", "NONONO");
         }
-
         if (foto2 != null) {
             this.foto2 = foto2;
-            Log.d("Happy", "Happy");
-
-        } else {
-            Log.d("NONONO", "NONONO");
-
         }
         if (foto3 != null) {
             this.foto3 = foto3;
-            Log.d("Happy", "Happy");
-
-        } else {
-            Log.d("NONONO", "NONONO");
-
         }
+
     }
 
 
@@ -189,23 +167,26 @@ public class MyClosetTabFragment extends Fragment {
     };
 
     public void startCardActivity(Garment garment, int pos) {
+
         if (value == 1) {
             Intent intent = new Intent(getActivity(), NewLookActivity.class);
             Bundle bundle = new Bundle();
 
-            bundle.putString("Foto", garment.photo);
+            bundle.putString("Foto", garment.getPhoto());
 
-            if (pos == 1) {
-                bundle.putString("Part", "Camiseta");
-
+            if (pos == 1 || pos == 3 || pos == 4) {
+                bundle.putString("garmentType", "Shirt");
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString("idShirt", garment.getId()).apply();
             } else if (pos == 2) {
-                bundle.putString("Part", "Pantalones");
-
+                bundle.putString("garmentType", "Legs");
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString("idLegs", garment.getId()).apply();
             } else if (pos == 5) {
-                bundle.putString("Part", "Bambas");
-
+                bundle.putString("garmentType", "Feet");
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().putString("idFeet", garment.getId()).apply();
             }
-
 
             intent.putExtras(bundle);
             if (getActivity() != null) {
@@ -217,15 +198,15 @@ public class MyClosetTabFragment extends Fragment {
         } else {
             Intent intent = new Intent(getActivity(), CardActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("ID", garment.id);
-            bundle.putString("Nombre", garment.name);
-            bundle.putString("Foto", garment.photo);
-            bundle.putString("Categoria", garment.category);
-            bundle.putString("Temporada", garment.season);
-            bundle.putString("Precio", garment.price);
-            bundle.putString("Color", garment.color);
-            bundle.putString("Talla", garment.size);
-            bundle.putString("Marca", garment.brand);
+            bundle.putString("ID", garment.getId());
+            bundle.putString("Nombre", garment.getName());
+            bundle.putString("Foto", garment.getPhoto());
+            bundle.putString("Categoria", garment.getCategory());
+            bundle.putString("Temporada", garment.getSeason());
+            bundle.putString("Precio", garment.getPrice());
+            bundle.putString("Color", garment.getColor());
+            bundle.putString("Talla", garment.getSize());
+            bundle.putString("Marca", garment.getBrand());
             intent.putExtras(bundle);
             startActivity(intent);
         }
@@ -236,7 +217,6 @@ public class MyClosetTabFragment extends Fragment {
         mAPIService = ApiUtils.getAPIService();
 
         HashMap query = new HashMap();
-
 
         query.put("category", "Camiseta");
         query.put("username", mUser.getEmail());
@@ -253,7 +233,7 @@ public class MyClosetTabFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Garment>> call, Throwable t) {
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.d("ERROR:", "NO SHIRTS");
             }
         });
 
@@ -386,14 +366,6 @@ public class MyClosetTabFragment extends Fragment {
             }
         });
 
-    }
-
-    public ListView getListView() {
-        return listView;
-    }
-
-    public void setListView(ListView listView) {
-        this.listView = listView;
     }
 
 }

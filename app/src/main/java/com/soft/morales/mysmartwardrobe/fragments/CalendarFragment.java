@@ -15,7 +15,7 @@ import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.exceptions.OutOfDateRangeException;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
-import com.soft.morales.mysmartwardrobe.NewLookActivity;
+import com.soft.morales.mysmartwardrobe.CheckLookActivity;
 import com.soft.morales.mysmartwardrobe.R;
 
 import java.util.Calendar;
@@ -23,8 +23,10 @@ import java.util.Locale;
 
 public class CalendarFragment extends Fragment {
 
-    String dayString;
-    int dayNumber;
+    String dayString, monthString;
+
+    int dayNumber, monthNumber, yearNumber;
+
 
     @Nullable
     @Override
@@ -32,7 +34,7 @@ public class CalendarFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
 
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2018, 4, 23);
+        calendar.set(2018, 05, 1);
 
         CalendarView calendarView = (CalendarView) rootView.findViewById(R.id.calendarView);
 
@@ -46,16 +48,22 @@ public class CalendarFragment extends Fragment {
 
             @Override
             public void onDayClick(EventDay eventDay) {
+
                 dayString = eventDay.getCalendar().getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault());
                 dayNumber = eventDay.getCalendar().get(Calendar.DAY_OF_MONTH);
+                monthNumber = eventDay.getCalendar().get(Calendar.MONTH);
+                yearNumber = eventDay.getCalendar().get(Calendar.YEAR);
 
-                Log.d("CALENDAR: ", dayString + " " + String.valueOf(dayNumber));
+                monthNumber++;
+
+                String stringNumber = String.valueOf(monthNumber);
+
+                monthString = "0" + stringNumber;
 
                 AlertDialog diaBox = AskOption();
                 diaBox.show();
 
             }
-
 
         });
 
@@ -63,26 +71,35 @@ public class CalendarFragment extends Fragment {
 
     }
 
-    private AlertDialog AskOption()
-    {
+    private AlertDialog AskOption() {
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(getContext())
                 //set message, title, and icon
                 .setTitle(dayString.toUpperCase() + " " + dayNumber)
                 .setMessage("Qué le gustaría hacer?")
-                .setPositiveButton("Añadir un look", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cerrar", new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
-                        Intent intent = new Intent(getContext(), NewLookActivity.class);
-                        startActivity(intent);
 
                         dialog.dismiss();
                     }
 
                 })
 
-                .setNegativeButton("Consultar looks", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Consultar look", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
+                        String date = String.valueOf(dayNumber).trim() + "-" + String.valueOf(monthString).trim() + "-" + String.valueOf(yearNumber).trim();
+
+                        Bundle bundle = new Bundle();
+                        bundle.putString("date", date);
+                        Intent intent = new Intent(getContext(), CheckLookActivity.class);
+                        intent.putExtras(bundle);
+
+                        try {
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            Log.d("Exception:", String.valueOf(e));
+                        }
 
                         dialog.dismiss();
 
@@ -93,6 +110,5 @@ public class CalendarFragment extends Fragment {
         return myQuittingDialogBox;
 
     }
-
 
 }

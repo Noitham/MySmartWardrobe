@@ -44,10 +44,10 @@ public class CustomAdapter extends BaseAdapter {
 
     /* private view holder class */
     private class ViewHolder {
-        ImageView garment_pic;
-        TextView garment_name;
-        TextView brand;
-        TextView category;
+        ImageView garmentPic;
+        TextView garmentName;
+        TextView garmentBrand;
+        TextView garmentCategory;
     }
 
     @Override
@@ -61,12 +61,12 @@ public class CustomAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.list_item, null, false);
             holder = new ViewHolder();
 
-            holder.garment_name = (TextView) convertView
+            holder.garmentName = (TextView) convertView
                     .findViewById(R.id.garment_name);
-            holder.garment_pic = (ImageView) convertView
+            holder.garmentPic = (ImageView) convertView
                     .findViewById(R.id.garment_pic);
-            holder.brand = (TextView) convertView.findViewById(R.id.brand);
-            holder.category = (TextView) convertView
+            holder.garmentBrand = (TextView) convertView.findViewById(R.id.brand);
+            holder.garmentCategory = (TextView) convertView
                     .findViewById(R.id.category);
 
             Garment row_pos = rowItems.get(position);
@@ -81,12 +81,12 @@ public class CustomAdapter extends BaseAdapter {
             final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(row_pos.getPhoto()).getPath(),
                     options);
 
-            holder.garment_pic.setScaleType(ImageView.ScaleType.FIT_CENTER);
-            holder.garment_pic.getLayoutParams().width = 200;
-            holder.garment_pic.setImageBitmap(bitmap);
-            holder.garment_name.setText(row_pos.getName());
-            holder.brand.setText(row_pos.getBrand());
-            holder.category.setText(row_pos.getCategory());
+            holder.garmentPic.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            holder.garmentPic.getLayoutParams().width = 200;
+            holder.garmentPic.setImageBitmap(bitmap);
+            holder.garmentName.setText(row_pos.getName());
+            holder.garmentBrand.setText(row_pos.getBrand());
+            holder.garmentCategory.setText(row_pos.getCategory());
 
             convertView.setTag(holder);
 

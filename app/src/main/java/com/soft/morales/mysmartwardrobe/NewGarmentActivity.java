@@ -1,6 +1,7 @@
 package com.soft.morales.mysmartwardrobe;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,12 +10,14 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +26,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +63,6 @@ public class NewGarmentActivity extends AppCompatActivity {
     // Activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
     public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
 
     // directory name to store captured images and videos
     private static final String IMAGE_DIRECTORY_NAME = "My Smart Wardrobe";
@@ -133,6 +136,8 @@ public class NewGarmentActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
                         sendPost(name, photo, category, season, price, color, size, brand);
+
+                        finish();
                     }
 
                 }.start();
@@ -168,7 +173,7 @@ public class NewGarmentActivity extends AppCompatActivity {
         SharedPreferences shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         User user = gson.fromJson(shared.getString("user", ""), User.class);
 
-        mAPIService.savePost(name, photo, category, season, price, user.email, color, size, brand).enqueue(new Callback<Garment>() {
+        mAPIService.savePost(name, photo, category, season, price, user.getEmail(), color, size, brand).enqueue(new Callback<Garment>() {
             @Override
             public void onResponse(Call<Garment> call, Response<Garment> response) {
 
@@ -188,7 +193,9 @@ public class NewGarmentActivity extends AppCompatActivity {
 
     private void setupToolbar() {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
@@ -240,7 +247,6 @@ public class NewGarmentActivity extends AppCompatActivity {
 
         spinnerCategory.setAdapter(adapterCategory);
         spinnerCategory.setSelection(adapterCategory.getCount()); //display hint
-
 
         spinnerSeason = (Spinner) findViewById(R.id.spinner_season);
 
@@ -299,12 +305,54 @@ public class NewGarmentActivity extends AppCompatActivity {
         };
 
         adapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterSize.add("XXL");
-        adapterSize.add("XL");
-        adapterSize.add("L");
-        adapterSize.add("M");
-        adapterSize.add("S");
-        adapterSize.add("Talla");
+
+        adapterSize.add("");
+
+        spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if (spinnerCategory.getSelectedItem().toString().equalsIgnoreCase("Calzado")) {
+                    adapterSize.clear();
+                    adapterSize.add("34");
+                    adapterSize.add("35");
+                    adapterSize.add("36");
+                    adapterSize.add("37");
+                    adapterSize.add("38");
+                    adapterSize.add("39");
+                    adapterSize.add("40");
+                    adapterSize.add("41");
+                    adapterSize.add("42");
+                    adapterSize.add("43");
+                    adapterSize.add("44");
+                    adapterSize.add("45");
+                    adapterSize.add("46");
+                    adapterSize.add("47");
+                    adapterSize.add("48");
+                    adapterSize.add("49");
+                    adapterSize.add("50");
+                    adapterSize.add("51");
+                    adapterSize.add("52");
+                    adapterSize.add("53");
+                    adapterSize.add("Talla");
+                } else if (spinnerCategory.getSelectedItem().toString().equalsIgnoreCase("")) {
+                    adapterSize.add("Talla");
+                } else {
+                    adapterSize.clear();
+                    adapterSize.add("XXL");
+                    adapterSize.add("XL");
+                    adapterSize.add("L");
+                    adapterSize.add("M");
+                    adapterSize.add("S");
+                    adapterSize.add("Talla");
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
         spinnerSize.setAdapter(adapterSize);
         spinnerSize.setSelection(adapterSize.getCount()); //display hint
@@ -433,9 +481,6 @@ public class NewGarmentActivity extends AppCompatActivity {
         if (type == MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator
                     + "IMG_" + timeStamp + ".jpg");
-        } else if (type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "VID_" + timeStamp + ".mp4");
         } else {
             return null;
         }
@@ -517,6 +562,54 @@ public class NewGarmentActivity extends AppCompatActivity {
         Uri uri = Uri.fromParts("package", getPackageName(), null);
         intent.setData(uri);
         startActivityForResult(intent, 101);
+    }
+
+    /**
+     * private EditText textName, textBrand, textPrice, textColor;
+     private Spinner spinnerCategory, spinnerSeason, spinnerSize;
+     * @return
+     */
+
+    @TargetApi(Build.VERSION_CODES.GINGERBREAD)
+    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+    public boolean validate() {
+        boolean valid = true;
+
+        String name = textName.getText().toString();
+        String brand= textBrand.getText().toString();
+        String price = textPrice.getText().toString();
+        String color = textColor.getText().toString();
+        String category = spinnerCategory.getSelectedItem().toString();
+        String season = spinnerSeason.getSelectedItem().toString();
+        String size = spinnerSize.getSelectedItem().toString();
+
+
+        if (name.isEmpty()) {
+            textName.setError("enter a valid name");
+            valid = false;
+        } else {
+            textName.setError(null);
+        }
+        if (brand.isEmpty()) {
+            textBrand.setError("enter a valid brand");
+            valid = false;
+        } else {
+            textBrand.setError(null);
+        }
+        if (price.isEmpty()) {
+            textPrice.setError("enter a valid price");
+            valid = false;
+        } else {
+            textPrice.setError(null);
+        }
+        if (color.isEmpty()) {
+            textColor.setError("enter a valid color");
+            valid = false;
+        } else {
+            textColor.setError(null);
+        }
+
+        return valid;
     }
 
 }

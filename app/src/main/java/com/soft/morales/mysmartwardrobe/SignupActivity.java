@@ -196,7 +196,7 @@ public class SignupActivity extends AppCompatActivity {
         };
 
         adapterAge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterAge.add("-10");
+        adapterAge.add("<10");
         adapterAge.add("11");
         adapterAge.add("12");
         adapterAge.add("13");
@@ -251,7 +251,7 @@ public class SignupActivity extends AppCompatActivity {
         adapterAge.add("62");
         adapterAge.add("63");
         adapterAge.add("64");
-        adapterAge.add("65+");
+        adapterAge.add(">65");
         adapterAge.add("Edad");
 
         spinnerAge.setAdapter(adapterAge);

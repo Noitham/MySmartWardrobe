@@ -9,7 +9,7 @@ public class Look {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private Integer id;
     @SerializedName("garment_id")
     @Expose
     private List<Integer> garment_id;
@@ -24,7 +24,7 @@ public class Look {
 
     }
 
-    public Look(String id, List<Integer> garment_id, String username, String date) {
+    public Look(Integer id, List<Integer> garment_id, String username, String date) {
         this.id = id;
         this.garment_id = garment_id;
         this.username = username;
@@ -37,11 +37,11 @@ public class Look {
         this.date = date;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -7,25 +7,25 @@ public class Brand {
 
     @SerializedName("id")
     @Expose
-    private String id;
+    private Integer id;
     @SerializedName("name")
     @Expose
     private String name;
 
-    public Brand(String id, String name) {
+    public Brand(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Brand(String id) {
+    public Brand(Integer id) {
         this.id = id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

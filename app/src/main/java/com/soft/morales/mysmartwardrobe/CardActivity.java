@@ -38,7 +38,7 @@ public class CardActivity extends AppCompatActivity {
     Button deleteButton;
 
     int pos;
-    String garmentId;
+    Integer garmentId;
 
     private APIService mAPIService;
 
@@ -81,7 +81,7 @@ public class CardActivity extends AppCompatActivity {
 
         String URI = mbundle.getString("Foto");
 
-        garmentId = mbundle.getString("ID");
+        garmentId = mbundle.getInt("ID");
         pos = mbundle.getInt("pos");
 
         // We get the data from the bundle and we fill it into the field.
@@ -154,9 +154,9 @@ public class CardActivity extends AppCompatActivity {
                         int id2 = looks.get(j).getGarmentsIds().get(1);
                         int id3 = looks.get(j).getGarmentsIds().get(2);
 
-                        if (garmentId.equalsIgnoreCase(String.valueOf(id1))
-                                || garmentId.equalsIgnoreCase(String.valueOf(id2))
-                                || garmentId.equalsIgnoreCase(String.valueOf(id3))) {
+                        if (garmentId == id1
+                                || garmentId == id2
+                                || garmentId == id3) {
 
                             deleteLook(looks.get(j).getId());
 
@@ -227,7 +227,7 @@ public class CardActivity extends AppCompatActivity {
      *
      * @param lookId lookId
      */
-    public void deleteLook(String lookId) {
+    public void deleteLook(Integer lookId) {
 
         mAPIService = ApiUtils.getAPIService();
 

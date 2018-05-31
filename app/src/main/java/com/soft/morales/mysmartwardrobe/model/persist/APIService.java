@@ -32,7 +32,7 @@ public interface APIService {
 
 
     @DELETE("garments/{id}/")
-    Call<Garment> deleteGarment(@Path("id") String id);
+    Call<Garment> deleteGarment(@Path("id") Integer id);
 
 
     @POST("garments/")
@@ -81,7 +81,7 @@ public interface APIService {
 
 
     @DELETE("looks/{id}/")
-    Call<Look> deleteLook(@Path("id") String id);
+    Call<Look> deleteLook(@Path("id") Integer id);
 
     @Multipart
     @PUT("users/{id}/")

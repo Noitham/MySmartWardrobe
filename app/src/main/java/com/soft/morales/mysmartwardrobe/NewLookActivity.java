@@ -51,7 +51,7 @@ public class NewLookActivity extends AppCompatActivity {
     android.support.design.widget.FloatingActionButton buttonCreateLook, butonDelete;
 
     private String foto;
-    private String idShirt, idLegs, idFeet;
+    private Integer idShirt, idLegs, idFeet;
 
     private String type;
 
@@ -285,9 +285,9 @@ public class NewLookActivity extends AppCompatActivity {
             foto = bundle.getString("Foto", "");
 
             SharedPreferences shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-            idShirt = shared.getString("idShirt", "");
-            idLegs = shared.getString("idLegs", "");
-            idFeet = shared.getString("idFeet", "");
+            idShirt = shared.getInt("idShirt", 0);
+            idLegs = shared.getInt("idLegs", 0);
+            idFeet = shared.getInt("idFeet", 0);
 
             List<Integer> myGarments = new ArrayList<>();
 
@@ -299,22 +299,22 @@ public class NewLookActivity extends AppCompatActivity {
                 Glide.with(this).load(Uri.parse(foto)).into(imgFeets);
             }
 
-            if (!idShirt.equals("")) {
-                myGarments.add(Integer.parseInt(idShirt));
+            if (!idShirt.equals(0)) {
+                myGarments.add(idShirt);
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Por favor, complete su look.", Toast.LENGTH_SHORT)
                         .show();
             }
-            if (!idLegs.equals("")) {
-                myGarments.add(Integer.parseInt(idLegs));
+            if (!idLegs.equals(0)) {
+                myGarments.add(idLegs);
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Por favor, complete su look.", Toast.LENGTH_SHORT)
                         .show();
             }
-            if (!idFeet.equals("")) {
-                myGarments.add(Integer.parseInt(idFeet));
+            if (!idFeet.equals(0)) {
+                myGarments.add(idFeet);
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Por favor, complete su look.", Toast.LENGTH_SHORT)
@@ -353,7 +353,7 @@ public class NewLookActivity extends AppCompatActivity {
                     }
                 });
 
-                // Clean the sharedPreferences
+                // Clean the sharedPreferences containing the garments ID's so we don't retrieve data from previous look
                 SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
                 sharedPref.edit().remove("idShirt").apply();
                 sharedPref.edit().remove("idLegs").apply();

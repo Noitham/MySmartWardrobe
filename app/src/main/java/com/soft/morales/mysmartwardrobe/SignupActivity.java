@@ -131,7 +131,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Registration failed", Toast.LENGTH_LONG).show();
 
         signupButton.setEnabled(true);
     }
@@ -291,6 +291,12 @@ public class SignupActivity extends AppCompatActivity {
                 Log.d("NOOK: ", "Unable to submit post to API.");
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        // disable going back to the MainActivity
+        moveTaskToBack(true);
     }
 
 }

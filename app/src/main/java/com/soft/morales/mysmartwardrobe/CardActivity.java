@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,8 @@ public class CardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.garment_details_layout);
+
+        setupToolbar();
 
         // Declare new Gson
         Gson gson = new Gson();
@@ -102,6 +105,16 @@ public class CardActivity extends AppCompatActivity {
                 diaBox.show();
             }
         });
+
+    }
+
+    private void setupToolbar() {
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 

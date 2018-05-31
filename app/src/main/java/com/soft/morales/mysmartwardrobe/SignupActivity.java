@@ -19,6 +19,10 @@ import com.soft.morales.mysmartwardrobe.model.User;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import retrofit2.Call;
@@ -56,7 +60,11 @@ public class SignupActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup();
+                try {
+                    signup();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -71,7 +79,7 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    public void signup() {
+    public void signup() throws NoSuchAlgorithmException {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
@@ -197,7 +205,7 @@ public class SignupActivity extends AppCompatActivity {
         };
 
         adapterAge.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapterAge.add("<10");
+        adapterAge.add("10");
         adapterAge.add("11");
         adapterAge.add("12");
         adapterAge.add("13");
@@ -252,7 +260,7 @@ public class SignupActivity extends AppCompatActivity {
         adapterAge.add("62");
         adapterAge.add("63");
         adapterAge.add("64");
-        adapterAge.add(">65");
+        adapterAge.add("65");
         adapterAge.add("Edad");
 
         spinnerAge.setAdapter(adapterAge);
@@ -260,7 +268,12 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
-    public void createAccount(String name, String email, String password, String age) {
+    public void createAccount(String name, String email, String password, String age) throws NoSuchAlgorithmException {
+
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(password.getBytes(), 0, password.length());
+
+        password = new BigInteger(1, m.digest()).toString(16);
 
         mAPIService.createAccount(name, email, password, age).enqueue(new Callback<User>() {
             @Override

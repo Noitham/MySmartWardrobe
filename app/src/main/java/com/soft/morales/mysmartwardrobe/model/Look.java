@@ -7,7 +7,9 @@ import java.util.List;
 
 public class Look {
 
-
+    @SerializedName("id")
+    @Expose
+    private String id;
     @SerializedName("garment_id")
     @Expose
     private List<Integer> garment_id;
@@ -22,10 +24,25 @@ public class Look {
 
     }
 
+    public Look(String id, List<Integer> garment_id, String username, String date) {
+        this.id = id;
+        this.garment_id = garment_id;
+        this.username = username;
+        this.date = date;
+    }
+
     public Look(List<Integer> garment_id, String username, String date) {
         this.garment_id = garment_id;
         this.username = username;
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public List<Integer> getGarmentsIds() {

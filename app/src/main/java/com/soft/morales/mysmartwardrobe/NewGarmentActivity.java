@@ -18,6 +18,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -157,6 +158,7 @@ public class NewGarmentActivity extends AppCompatActivity {
                 String brand = textBrand.getText().toString().trim();
 
                 sendPost(name, photo, category, season, price, color, size, brand);
+
             }
         });
 
@@ -180,6 +182,30 @@ public class NewGarmentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Garment> call, Throwable t) {
+                Log.d("NOOK: ", "Unable to submit post to API.");
+                isUploading = false;
+            }
+        });
+
+    }
+
+    public void updateUser(String garmentId) {
+
+        Gson gson = new Gson();
+        SharedPreferences shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        User user = gson.fromJson(shared.getString("user", ""), User.class);
+
+        mAPIService.updateUser(garmentId).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                if (response.isSuccessful()) {
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
                 Log.d("NOOK: ", "Unable to submit post to API.");
                 isUploading = false;
             }
@@ -587,7 +613,7 @@ public class NewGarmentActivity extends AppCompatActivity {
         } else {
             textBrand.setError(null);
         }
-        if (price.isEmpty()) {
+        if (price.isEmpty() || !TextUtils.isDigitsOnly(price)) {
             textPrice.setError("enter a valid price");
             valid = false;
         } else {

@@ -21,6 +21,9 @@ import com.soft.morales.mysmartwardrobe.model.User;
 import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
 
     User user;
     String emailUser = null;
+    String email;
+    String password;
 
     boolean check = false;
 
@@ -80,7 +85,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                login();
+                try {
+                    login();
+                } catch (NoSuchAlgorithmException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -98,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.GINGERBREAD)
     @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
-    public void login() {
+    public void login() throws NoSuchAlgorithmException {
         Log.d(TAG, "Login");
 
         if (!validate()) {
@@ -115,8 +124,13 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
+        email = emailText.getText().toString();
+        password = passwordText.getText().toString();
+
+        MessageDigest m = MessageDigest.getInstance("MD5");
+        m.update(password.getBytes(), 0, password.length());
+
+        password = new BigInteger(1, m.digest()).toString(16);
 
         // TODO: Implement your own authentication logic here.
 

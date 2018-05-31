@@ -104,7 +104,9 @@ public class NewLookActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 AlertDialog diaBox = askCreateLook();
+
                 diaBox.show();
+
             }
         });
 
@@ -199,6 +201,7 @@ public class NewLookActivity extends AppCompatActivity {
     }
 
     private AlertDialog askCreateLook() {
+
         AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
                 //set message, title, and icon
                 .setTitle("Confirm")
@@ -319,8 +322,9 @@ public class NewLookActivity extends AppCompatActivity {
 
                         if (response.isSuccessful()) {
                             Log.d("OK: ", "post submitted to API." + response.body().toString());
+                            finish();
                         }
-
+                        finish();
                     }
 
                     @Override
@@ -328,6 +332,8 @@ public class NewLookActivity extends AppCompatActivity {
                         Log.d("NOOK: ", "Unable to submit post to API.");
                     }
                 });
+
+                finish();
 
             } else {
                 Toast.makeText(getApplicationContext(),

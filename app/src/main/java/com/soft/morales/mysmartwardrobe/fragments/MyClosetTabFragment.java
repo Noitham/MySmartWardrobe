@@ -46,9 +46,7 @@ public class MyClosetTabFragment extends Fragment {
 
     int value;
 
-    String foto1;
-    String foto2;
-    String foto3;
+
 
     List<Garment> myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
     private User mUser;
@@ -58,20 +56,9 @@ public class MyClosetTabFragment extends Fragment {
         mPosition = position;
     }
 
-    public MyClosetTabFragment(int position, int mode, String foto1, String foto2, String foto3) {
+    public MyClosetTabFragment(int position, int mode) {
         mPosition = position;
         value = mode;
-
-        if (foto1 != null) {
-            this.foto1 = foto1;
-        }
-        if (foto2 != null) {
-            this.foto2 = foto2;
-        }
-        if (foto3 != null) {
-            this.foto3 = foto3;
-        }
-
     }
 
 

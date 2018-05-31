@@ -17,9 +17,6 @@ public class MyClosetFragment extends Fragment {
 
     private TabLayout tabLayout;
     int mode = 0;
-    String foto1;
-    String foto2;
-    String foto3;
 
     private ViewPager viewPager;
     private int[] tabIcons = {
@@ -41,9 +38,6 @@ public class MyClosetFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             mode = bundle.getInt("mode", -1);
-            foto1 = bundle.getString("foto1", null);
-            foto2 = bundle.getString("foto2", null);
-            foto3 = bundle.getString("foto3", null);
         }
         setupViewPager(viewPager);
 
@@ -77,12 +71,12 @@ public class MyClosetFragment extends Fragment {
         TabsAdapter tabsAdapter = new TabsAdapter(getChildFragmentManager());
 
         if (mode == 1) {
-            tabsAdapter.addFragment(new MyClosetTabFragment(1, mode, foto1, foto2, foto3));
-            tabsAdapter.addFragment(new MyClosetTabFragment(2, mode, foto1, foto2, foto3));
-            tabsAdapter.addFragment(new MyClosetTabFragment(3, mode, foto1, foto2, foto3));
-            tabsAdapter.addFragment(new MyClosetTabFragment(4, mode, foto1, foto2, foto3));
-            tabsAdapter.addFragment(new MyClosetTabFragment(5, mode, foto1, foto2, foto3));
-            tabsAdapter.addFragment(new MyClosetTabFragment(6, mode, foto1, foto2, foto3));
+            tabsAdapter.addFragment(new MyClosetTabFragment(1, mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(2, mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(3, mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(4, mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(5, mode));
+            tabsAdapter.addFragment(new MyClosetTabFragment(6, mode));
         } else {
             tabsAdapter.addFragment(new MyClosetTabFragment(1));
             tabsAdapter.addFragment(new MyClosetTabFragment(2));

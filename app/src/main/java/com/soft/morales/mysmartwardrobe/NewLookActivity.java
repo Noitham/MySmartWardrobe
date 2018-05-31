@@ -7,7 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -208,9 +210,20 @@ public class NewLookActivity extends AppCompatActivity {
                 .setMessage("Do you want to save this look to current day?")
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
 
+                    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                        createLookPost(intent3);
+                        if (imgTorso.getDrawable() == getDrawable(R.drawable.torso_hombre) ||
+                                imgLegs.getDrawable() == getDrawable(R.drawable.pantalon_hombre) ||
+                                imgFeets.getDrawable() == getDrawable(R.drawable.pies_hombre)) {
+
+                            Toast.makeText(getApplicationContext(),
+                                    "Porfavor, completa el look antes de guardarlo", Toast.LENGTH_SHORT)
+                                    .show();
+
+                        } else {
+                            createLookPost(intent3);
+                        }
 
                     }
 
@@ -269,6 +282,7 @@ public class NewLookActivity extends AppCompatActivity {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void createLookPost(Intent data) {
 
         Log.d("POST:", "ENTRA");
@@ -295,11 +309,20 @@ public class NewLookActivity extends AppCompatActivity {
                 Glide.with(this).load(Uri.parse(foto)).into(imgFeets);
             }
 
-            myGarments.add(Integer.parseInt(idShirt));
-            myGarments.add(Integer.parseInt(idLegs));
-            myGarments.add(Integer.parseInt(idFeet));
+            if (imgTorso.getDrawable() == getDrawable(R.drawable.torso_hombre) ||
+                    imgLegs.getDrawable() == getDrawable(R.drawable.pantalon_hombre) ||
+                    imgFeets.getDrawable() == getDrawable(R.drawable.pies_hombre)) {
 
-            Log.d("SIZE: ", String.valueOf(myGarments.size()));
+                myGarments.add(Integer.parseInt(idShirt));
+                myGarments.add(Integer.parseInt(idLegs));
+                myGarments.add(Integer.parseInt(idFeet));
+
+            } else{
+                Toast.makeText(getApplicationContext(),
+                        "Porfavor, completa el look antes de guardarlo", Toast.LENGTH_SHORT)
+                        .show();
+            }
+
 
             if (myGarments.size() == 3) {
 
@@ -336,9 +359,6 @@ public class NewLookActivity extends AppCompatActivity {
                 finish();
 
             } else {
-                Toast.makeText(getApplicationContext(),
-                        "Bundle vacío", Toast.LENGTH_SHORT)
-                        .show();
                 Log.d("POST:", "VACÍO");
             }
 

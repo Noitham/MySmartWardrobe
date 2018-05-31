@@ -1,6 +1,5 @@
 package com.soft.morales.mysmartwardrobe;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,10 +52,15 @@ public class CheckLookActivity extends AppCompatActivity {
 
         setupToolbar();
 
+        // Declare new Gson
         gson = new Gson();
-        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        // Declare SharedPreferences variable so we can acced to our SharedPreferences
+        sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+
+        // We build a User from our given information from the sharedPref file (User in Gson format)
         mUser = gson.fromJson(sharedPref.getString("user", ""), User.class);
 
+        // Set our components
         imgTorso = (ImageView) findViewById(R.id.torso_hombre);
         imgLegs = (ImageView) findViewById(R.id.pantalones_hombres);
         imgFeets = (ImageView) findViewById(R.id.pies_hombre);

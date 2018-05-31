@@ -77,6 +77,7 @@ public class SignupActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 
     public void signup() throws NoSuchAlgorithmException {
@@ -288,9 +289,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     Log.d("OK: ", "post submitted to API." + response.body().toString());
-                    finish();
                 }
-                finish();
             }
 
             @Override

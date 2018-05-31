@@ -1,5 +1,6 @@
 package com.soft.morales.mysmartwardrobe.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,8 +20,13 @@ import java.util.List;
 
 public class CustomAdapter extends BaseAdapter {
 
-    Context context;
-    List<Garment> rowItems;
+    /**
+     * CustomAdapter for our listview.
+     * It will show our list of items with a description, and a thumbnail.
+     */
+
+    private Context context;
+    private List<Garment> rowItems;
 
     public CustomAdapter(Context context, List<Garment> rowItems) {
         this.context = context;
@@ -50,6 +56,7 @@ public class CustomAdapter extends BaseAdapter {
         TextView garmentCategory;
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -58,6 +65,7 @@ public class CustomAdapter extends BaseAdapter {
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         if (convertView == null) {
+            assert mInflater != null;
             convertView = mInflater.inflate(R.layout.list_item, null, false);
             holder = new ViewHolder();
 

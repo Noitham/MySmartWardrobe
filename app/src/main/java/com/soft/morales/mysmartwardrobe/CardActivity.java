@@ -1,7 +1,6 @@
 package com.soft.morales.mysmartwardrobe;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,6 +31,7 @@ import retrofit2.Response;
 
 public class CardActivity extends AppCompatActivity {
 
+    // We define our components
     TextView txtName, txtCategory, txtSeason, txtPrice, txtColor, txtSize, txtBrand;
     ImageView imageView;
     Button deleteButton;
@@ -53,10 +53,15 @@ public class CardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.garment_details_layout);
 
+        // Declare new Gson
         Gson gson = new Gson();
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        // Declare SharedPreferences variable so we can acced to our SharedPreferences
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), MODE_PRIVATE);
+
+        // We build a User from our given information from the sharedPref file (User in Gson format)
         mUser = gson.fromJson(sharedPref.getString("user", ""), User.class);
 
+        // Define our components
         txtName = (TextView) findViewById(R.id.tvName);
         txtCategory = (TextView) findViewById(R.id.tvCategory);
         txtSeason = (TextView) findViewById(R.id.tvSeason);
@@ -76,6 +81,7 @@ public class CardActivity extends AppCompatActivity {
         garmentId = mbundle.getString("ID");
         pos = mbundle.getInt("pos");
 
+        // We get the data from the bundle and we fill it into the field.
         txtName.setText("Nombre: " + mbundle.getString("Nombre"));
         txtCategory.setText("Categoría: " + mbundle.getString("Categoria"));
         txtSeason.setText("Temporada: " + mbundle.getString("Temporada"));
@@ -84,6 +90,7 @@ public class CardActivity extends AppCompatActivity {
         txtSize.setText("Talla: " + mbundle.getString("Talla"));
         txtBrand.setText("Marca: " + mbundle.getString("Marca"));
 
+        // For the uri, we'll parse it and set it into the imageView
         Uri myUri = Uri.parse(URI);
 
         Glide.with(this).load(myUri).into(imageView);
@@ -98,6 +105,9 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method we'll call for deleting a garment. We'll send a delete Request to the server by a given garmentId.
+     */
     public void deleteGarment() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -107,6 +117,7 @@ public class CardActivity extends AppCompatActivity {
         call.enqueue(new Callback<Garment>() {
             @Override
             public void onResponse(Call<Garment> call, Response<Garment> response) {
+
                 Toast.makeText(getApplicationContext(), "DELETED CORRECTLY", Toast.LENGTH_LONG).show();
 
                 Bundle b = new Bundle();
@@ -118,6 +129,9 @@ public class CardActivity extends AppCompatActivity {
                 } else {
                     isDeleting = false;
                 }
+
+                // When we're deleting a garment, we check if the removed garment was being used in a look.
+                // In that case, we will also remove any look containing that garment.
 
                 for (int j = 0; j < looks.size(); j++) {
 
@@ -134,9 +148,7 @@ public class CardActivity extends AppCompatActivity {
                             deleteLook(looks.get(j).getId());
 
                         }
-
                     }
-
                 }
 
                 b.putInt("pos", pos);
@@ -156,34 +168,10 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
-    private AlertDialog AskOption() {
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
-                //set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
-                        getLooks();
-                        dialog.dismiss();
-                    }
-
-                })
-
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-
-                    }
-                })
-                .create();
-
-        return myQuittingDialogBox;
-
-    }
-
+    /**
+     * Method we'll call for getting all looks.
+     * We'll use them for deleting any look containing a deleted garment.
+     */
     public void getLooks() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -210,9 +198,7 @@ public class CardActivity extends AppCompatActivity {
                     }
 
                     deleteGarment();
-
                 }
-
             }
 
             @Override
@@ -221,9 +207,13 @@ public class CardActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
+    /**
+     * Method we'll call for getting a look by its id.
+     *
+     * @param lookId lookId
+     */
     public void deleteLook(String lookId) {
 
         mAPIService = ApiUtils.getAPIService();
@@ -233,6 +223,7 @@ public class CardActivity extends AppCompatActivity {
         call.enqueue(new Callback<Look>() {
             @Override
             public void onResponse(Call<Look> call, Response<Look> response) {
+
                 Toast.makeText(getApplicationContext(), "DELETED CORRECTLY", Toast.LENGTH_LONG).show();
 
                 finish();
@@ -247,5 +238,38 @@ public class CardActivity extends AppCompatActivity {
 
     }
 
+
+    /**
+     * Method for creating an AlertDialong asking the user to choose an option.
+     *
+     * @return mDeleteDialog
+     */
+    private AlertDialog AskOption() {
+        AlertDialog mDeleteDialog = new AlertDialog.Builder(this)
+                //set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //Method for deleting the garment
+                        getLooks();
+                        dialog.dismiss();
+                    }
+
+                })
+
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return mDeleteDialog;
+
+    }
 
 }

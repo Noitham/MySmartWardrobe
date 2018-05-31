@@ -46,23 +46,23 @@ public class MyClosetTabFragment extends Fragment {
 
     int value;
 
-
-
     List<Garment> myShirts, myJerseys, myJackets, myJeans, myShoes, myAccessories;
     private User mUser;
     private CustomAdapter mAdapter;
 
+    // Identify the tab by its position
     public MyClosetTabFragment(int position) {
         mPosition = position;
     }
 
+    // Identify the tab by its position and mode(value) (when we're comming from createLook).
     public MyClosetTabFragment(int position, int mode) {
         mPosition = position;
         value = mode;
     }
 
-
     public MyClosetTabFragment() {
+
     }
 
     @Nullable
@@ -70,12 +70,17 @@ public class MyClosetTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_tab, container, false);
 
+        // Declare new Gson
         Gson gson = new Gson();
-        SharedPreferences shared = getActivity().getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        mUser = gson.fromJson(shared.getString("user", ""), User.class);
+        // Declare SharedPreferences variable so we can acced to our SharedPreferences
+        SharedPreferences sharedPref = getActivity().getSharedPreferences(getString(R.string.preference_file_key), getActivity().MODE_PRIVATE);
+
+        // We build a User from our given information from the sharedPref file (User in Gson format)
+        mUser = gson.fromJson(sharedPref.getString("user", ""), User.class);
 
         listView = (ListView) container.findViewById(R.id.listview);
 
+        // Switch case that will call the different methods that will fill our listview when we're moving through the different tabs.
         switch (mPosition) {
             case 1:
                 getAllShirts();
@@ -102,14 +107,21 @@ public class MyClosetTabFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Method that will fill our listview with the given GarmentsList.
+     *
+     * @param Garments list to show in the listview.
+     */
     public void fillListView(List<Garment> Garments) {
 
         List<Garment> rowItems = new ArrayList<Garment>();
 
+        // In case our list is not null, we'll fill the view.
         if (Garments != null) {
 
             for (int i = 0; i < Garments.size(); i++) {
 
+                // We add the items from our list.
                 Garment item = new Garment(Garments.get(i).getName(),
                         Garments.get(i).getPhoto(), Garments.get(i).getCategory(),
                         Garments.get(i).getBrand());
@@ -117,7 +129,9 @@ public class MyClosetTabFragment extends Fragment {
 
             }
 
+            // Here we'll add the listener that will start our cardActivity of our selected garment from the listview.
             if (getView() != null) {
+
                 listView = (ListView) getView().findViewById(R.id.listview);
 
                 mAdapter = new CustomAdapter(getContext(), rowItems);
@@ -128,6 +142,7 @@ public class MyClosetTabFragment extends Fragment {
         }
     }
 
+    // Listener that will get the garment by it's given position and will start the cardActivity showing its information.
     AdapterView.OnItemClickListener listener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -160,6 +175,19 @@ public class MyClosetTabFragment extends Fragment {
         }
     };
 
+    /**
+     * Method we call for starting the cardActivity.
+     * It will get the selected garment and its position.
+     * <p>
+     * If the value is 0 (we come from the gallery), we'll start a cardActivity with the selected garment data.
+     * <p>
+     * Otherwise (value is 1), we're coming from the NewLookActivity (we're selecting a garment of the look), in that case
+     * when we click in a garment, we'll write into the sharedPreferences the garmentId and it's type for identifying it, then
+     * we'll return to the NewLookActivity.
+     *
+     * @param garment garment to show.
+     * @param pos     in the listview.
+     */
     public void startCardActivity(Garment garment, int pos) {
 
         if (value == 1) {
@@ -182,19 +210,21 @@ public class MyClosetTabFragment extends Fragment {
                 sharedPref.edit().putString("idFeet", garment.getId()).apply();
             }
 
+            // We introduce into the bundle the information from the selected garment.
             intent.putExtras(bundle);
             if (getActivity() != null) {
+                // We set the activity result, NewLookActivity @startActivityForResult will be called.
                 getActivity().setResult(RESULT_OK, intent);
                 getActivity().finish();
             }
 
-
         } else {
+
+            // Otherwise, when value is 0, we'll start the cardActivity with the given Garment information.
             Intent intent = new Intent(getActivity(), CardActivity.class);
 
             Bundle bundle = new Bundle();
             bundle.putString("ID", garment.getId());
-            bundle.putInt("pos", lastItemClicked);
             bundle.putString("Nombre", garment.getName());
             bundle.putString("Foto", garment.getPhoto());
             bundle.putString("Categoria", garment.getCategory());
@@ -203,14 +233,21 @@ public class MyClosetTabFragment extends Fragment {
             bundle.putString("Color", garment.getColor());
             bundle.putString("Talla", garment.getSize());
             bundle.putString("Marca", garment.getBrand());
+            bundle.putInt("pos", lastItemClicked);
             intent.putExtras(bundle);
+
             startActivityForResult(intent, CARD_ACTION);
         }
-
 
     }
 
 
+    /**
+     * Method we call for getting all the loged in user's garments type shirt.
+     * We set the category to "Camsieta", and we get the username from the sharedPreferences file.
+     * <p>
+     * When we have the list with the shirts, we'll fill the list view with them.
+     */
     public void getAllShirts() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -238,16 +275,12 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CARD_ACTION && resultCode == RESULT_OK) {
-            int pos = data.getExtras().getInt("pos");
-
-            mAdapter.removeItem(pos);
-            mAdapter.notifyDataSetChanged();
-        }
-    }
-
+    /**
+     * Method we call for getting all the loged in user's garments type jacket.
+     * We set the category to "Chaqueta", and we get the username from the sharedPreferences file.
+     * <p>
+     * When we have the list with the shirts, we'll fill the list view with them.
+     */
     public void getAllJackets() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -274,6 +307,12 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
+    /**
+     * Method we call for getting all the loged in user's garments type jeans.
+     * We set the category to "Pantalón", and we get the username from the sharedPreferences file.
+     * <p>
+     * When we have the list with the shirts, we'll fill the list view with them.
+     */
     public void getAllJeans() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -299,7 +338,12 @@ public class MyClosetTabFragment extends Fragment {
         });
     }
 
-
+    /**
+     * Method we call for getting all the loged in user's garments type jersey.
+     * We set the category to "Jersey", and we get the username from the sharedPreferences file.
+     * <p>
+     * When we have the list with the shirts, we'll fill the list view with them.
+     */
     public void getAllJerseys() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -325,6 +369,13 @@ public class MyClosetTabFragment extends Fragment {
         });
     }
 
+
+    /**
+     * Method we call for getting all the loged in user's garments type accesory.
+     * We set the category to "Accesorio", and we get the username from the sharedPreferences file.
+     * <p>
+     * When we have the list with the shirts, we'll fill the list view with them.
+     */
     public void getAllAccessories() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -351,6 +402,13 @@ public class MyClosetTabFragment extends Fragment {
 
     }
 
+
+    /**
+     * Method we call for getting all the loged in user's garments type shoes.
+     * We set the category to "Calzado", and we get the username from the sharedPreferences file.
+     * <p>
+     * When we have the list with the shirts, we'll fill the list view with them.
+     */
     public void getAllShoes() {
 
         mAPIService = ApiUtils.getAPIService();
@@ -375,6 +433,23 @@ public class MyClosetTabFragment extends Fragment {
             }
         });
 
+    }
+
+    /**
+     * Method that when called will remove from the list a deleted garment (by it's postion).
+     *
+     * @param requestCode CARD_ACTION
+     * @param resultCode  RESULT_OK
+     * @param data        data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CARD_ACTION && resultCode == RESULT_OK) {
+            int pos = data.getExtras().getInt("pos");
+
+            mAdapter.removeItem(pos);
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
 }

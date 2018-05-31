@@ -46,7 +46,6 @@ public class CheckLookActivity extends AppCompatActivity {
 
     String date;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

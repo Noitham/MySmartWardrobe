@@ -14,7 +14,6 @@ import com.soft.morales.mysmartwardrobe.adapters.TabsAdapter;
 
 public class MyClosetFragment extends Fragment {
 
-
     private TabLayout tabLayout;
     int mode = 0;
 

@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
@@ -46,6 +49,8 @@ import com.soft.morales.mysmartwardrobe.model.persist.APIService;
 import com.soft.morales.mysmartwardrobe.model.persist.ApiUtils;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -182,30 +187,6 @@ public class NewGarmentActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Garment> call, Throwable t) {
-                Log.d("NOOK: ", "Unable to submit post to API.");
-                isUploading = false;
-            }
-        });
-
-    }
-
-    public void updateUser(String garmentId) {
-
-        Gson gson = new Gson();
-        SharedPreferences shared = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        User user = gson.fromJson(shared.getString("user", ""), User.class);
-
-        mAPIService.updateUser(garmentId).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-
-                if (response.isSuccessful()) {
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
                 Log.d("NOOK: ", "Unable to submit post to API.");
                 isUploading = false;
             }
@@ -386,7 +367,8 @@ public class NewGarmentActivity extends AppCompatActivity {
     /*
      * Capturing Camera Image will lauch camera app requrest image capture
      */
-    private void captureImage() {
+    private void captureImage() throws IOException {
+
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
@@ -395,6 +377,7 @@ public class NewGarmentActivity extends AppCompatActivity {
 
         // start the image capture Intent
         startActivityForResult(intent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+
     }
 
     /**
@@ -407,7 +390,11 @@ public class NewGarmentActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // successfully captured the image
                 // display it in image view
-                previewCapturedImage();
+                try {
+                    previewCapturedImage();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(getApplicationContext(),
@@ -425,7 +412,7 @@ public class NewGarmentActivity extends AppCompatActivity {
     /*
      * Display image from a path to ImageView
      */
-    private void previewCapturedImage() {
+    private void previewCapturedImage() throws IOException {
         try {
 
             imgPreview.setVisibility(View.VISIBLE);
@@ -437,14 +424,54 @@ public class NewGarmentActivity extends AppCompatActivity {
             // images
             options.inSampleSize = 8;
 
+
             final Bitmap bitmap = BitmapFactory.decodeFile(fileUri.getPath(),
                     options);
 
-            imgPreview.setImageBitmap(bitmap);
+            imgPreview.setImageBitmap(rotateImageIfRequired(this, bitmap, fileUri));
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Rotate an image if required.
+     *
+     * @param img           The image bitmap
+     * @param selectedImage Image URI
+     * @return The resulted Bitmap after manipulation
+     */
+    private static Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) throws IOException {
+
+        InputStream input = context.getContentResolver().openInputStream(selectedImage);
+        ExifInterface ei;
+        if (Build.VERSION.SDK_INT > 23)
+            ei = new ExifInterface(input);
+        else
+            ei = new ExifInterface(selectedImage.getPath());
+
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(img, 90);
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(img, 180);
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(img, 270);
+            default:
+                return img;
+        }
+    }
+
+    private static Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);
+        Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+        img.recycle();
+        return rotatedImg;
+    }
+
 
     /**
      * Here we store the file url as it will be null after returning from camera
@@ -528,7 +555,11 @@ public class NewGarmentActivity extends AppCompatActivity {
                         // check if all permissions are granted
                         if (report.areAllPermissionsGranted()) {
                             Toast.makeText(getApplicationContext(), "All permissions are granted!", Toast.LENGTH_SHORT).show();
-                            captureImage();
+                            try {
+                                captureImage();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
 
                         // check for permanent denial of any permission

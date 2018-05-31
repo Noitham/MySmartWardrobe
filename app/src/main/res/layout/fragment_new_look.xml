@@ -26,27 +26,26 @@
 
     <ImageView
         android:id="@+id/torso_hombre"
-        android:layout_width="240dp"
-        android:layout_height="220dp"
+        android:layout_width="220dp"
+        android:layout_height="200dp"
         android:src="@drawable/torso_hombre"
         android:layout_gravity="center"
-        android:layout_marginBottom="240dp" />
+        android:layout_marginBottom="220dp" />
 
     <ImageView
         android:id="@+id/pantalones_hombres"
-        android:layout_width="240dp"
-        android:layout_height="180dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:src="@drawable/pantalon_hombre"
         android:layout_gravity="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="135dp"/>
+        android:layout_marginTop="145dp"/>
 
     <ImageView
         android:id="@+id/pies_hombre"
-        android:layout_width="240dp"
-        android:layout_height="80dp"
+        android:layout_width="110dp"
+        android:layout_height="60dp"
         android:layout_gravity="center"
-        android:layout_marginTop="400dp"
+        android:layout_marginTop="375dp"
         android:src="@drawable/pies_hombre" />
 
     <android.support.design.widget.FloatingActionButton

@@ -3,7 +3,6 @@ package com.soft.morales.mysmartwardrobe.adapters;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -13,6 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.soft.morales.mysmartwardrobe.R;
 import com.soft.morales.mysmartwardrobe.model.Garment;
 
@@ -86,12 +86,12 @@ public class CustomAdapter extends BaseAdapter {
             // images
             options.inSampleSize = 20;
 
-            final Bitmap bitmap = BitmapFactory.decodeFile(Uri.parse(row_pos.getPhoto()).getPath(),
-                    options);
+            Uri myUri = Uri.parse(row_pos.getPhoto());
+
 
             holder.garmentPic.setScaleType(ImageView.ScaleType.FIT_CENTER);
             holder.garmentPic.getLayoutParams().width = 200;
-            holder.garmentPic.setImageBitmap(bitmap);
+            Glide.with(context).load(myUri).into(holder.garmentPic);
             holder.garmentName.setText(row_pos.getName());
             holder.garmentBrand.setText(row_pos.getBrand());
             holder.garmentCategory.setText(row_pos.getCategory());

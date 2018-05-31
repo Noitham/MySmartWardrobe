@@ -213,17 +213,7 @@ public class NewLookActivity extends AppCompatActivity {
                     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                     public void onClick(DialogInterface dialog, int whichButton) {
 
-                        if (imgTorso.getDrawable() == getDrawable(R.drawable.torso_hombre) ||
-                                imgLegs.getDrawable() == getDrawable(R.drawable.pantalon_hombre) ||
-                                imgFeets.getDrawable() == getDrawable(R.drawable.pies_hombre)) {
-
-                            Toast.makeText(getApplicationContext(),
-                                    "Porfavor, completa el look antes de guardarlo", Toast.LENGTH_SHORT)
-                                    .show();
-
-                        } else {
-                            createLookPost(intent3);
-                        }
+                        createLookPost(intent3);
 
                     }
 
@@ -309,20 +299,27 @@ public class NewLookActivity extends AppCompatActivity {
                 Glide.with(this).load(Uri.parse(foto)).into(imgFeets);
             }
 
-            if (imgTorso.getDrawable() == getDrawable(R.drawable.torso_hombre) ||
-                    imgLegs.getDrawable() == getDrawable(R.drawable.pantalon_hombre) ||
-                    imgFeets.getDrawable() == getDrawable(R.drawable.pies_hombre)) {
-
+            if (!idShirt.equals("")) {
                 myGarments.add(Integer.parseInt(idShirt));
-                myGarments.add(Integer.parseInt(idLegs));
-                myGarments.add(Integer.parseInt(idFeet));
-
-            } else{
+            } else {
                 Toast.makeText(getApplicationContext(),
-                        "Porfavor, completa el look antes de guardarlo", Toast.LENGTH_SHORT)
+                        "Por favor, complete su look.", Toast.LENGTH_SHORT)
                         .show();
             }
-
+            if (!idLegs.equals("")) {
+                myGarments.add(Integer.parseInt(idLegs));
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Por favor, complete su look.", Toast.LENGTH_SHORT)
+                        .show();
+            }
+            if (!idFeet.equals("")) {
+                myGarments.add(Integer.parseInt(idFeet));
+            } else {
+                Toast.makeText(getApplicationContext(),
+                        "Por favor, complete su look.", Toast.LENGTH_SHORT)
+                        .show();
+            }
 
             if (myGarments.size() == 3) {
 
@@ -356,10 +353,19 @@ public class NewLookActivity extends AppCompatActivity {
                     }
                 });
 
+                // Clean the sharedPreferences
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                sharedPref.edit().remove("idShirt").apply();
+                sharedPref.edit().remove("idLegs").apply();
+                sharedPref.edit().remove("idFeet").apply();
+
                 finish();
 
             } else {
                 Log.d("POST:", "VACÍO");
+                Toast.makeText(getApplicationContext(),
+                        "Por favor, complete su look.", Toast.LENGTH_SHORT)
+                        .show();
             }
 
         }

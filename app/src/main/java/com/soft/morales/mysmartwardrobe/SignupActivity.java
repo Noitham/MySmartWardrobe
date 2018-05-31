@@ -136,6 +136,14 @@ public class SignupActivity extends AppCompatActivity {
         signupButton.setEnabled(true);
     }
 
+    /**
+     *This method get the value of the fields neccessary's to create a user and validate his values.
+     * If some field is not valid we will show a warn to the user explaining the reason why the field is not valid.
+     *
+     * In case that some field didn't pass the validation filter then we return false, otherwise we'll return true.
+     *
+     * @return true when validated, false otherwise.
+     */
     public boolean validate() {
         boolean valid = true;
 
@@ -147,13 +155,12 @@ public class SignupActivity extends AppCompatActivity {
         TextView errorText = (TextView) spinnerAge.getSelectedView();
 
         if (age.equalsIgnoreCase("edad")) {
-            errorText.setError("anything here, just to add the icon");
+            errorText.setError("error");
             errorText.setTextColor(Color.RED);//just to highlight that this is an error
             errorText.setText("please, choose an option");//changes the selected item text to this
             valid = false;
-        } else {
-
         }
+
 
         if (name.isEmpty() || name.length() < 3) {
             nameText.setError("at least 3 characters");
